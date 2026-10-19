@@ -32,18 +32,17 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
   const [newComment, setNewComment] = useState('');
   const [commenterName, setCommenterName] = useState('');
 
+  // Lock body scroll when article is open
   useEffect(() => {
-    const handleScroll = (e: any) => {
-      const el = e.target;
-      if (el) {
-        const total = el.scrollHeight - el.clientHeight;
-        if (total > 0) {
-          setScrollProgress((el.scrollTop / total) * 100);
-        }
-      }
+    if (article) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
     };
-    return () => {};
-  }, []);
+  }, [article]);
 
   if (!article) return null;
 
@@ -90,8 +89,8 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
           style={{ width: `${scrollProgress}%` }}
         />
 
-        {/* Top Sticky Tool Bar */}
-        <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-gray-200 px-4 py-2.5 flex items-center justify-between">
+        {/* Top Sticky Tool Bar with 44px min touch targets */}
+        <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-gray-200 px-3 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between">
           <div className="flex items-center space-x-2">
             <span className="text-xs font-black uppercase tracking-wider text-[#0E5B44]">
               {article.category}
@@ -100,56 +99,49 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
             <span className="text-xs text-gray-500 font-medium">{article.readTime}</span>
           </div>
 
-          <div className="flex items-center space-x-2">
-            {/* Font Sizer */}
-            <div className="hidden sm:flex items-center bg-gray-100 rounded p-0.5 text-xs font-bold text-gray-700">
+          <div className="flex items-center space-x-1 sm:space-x-2">
+            {/* Font Resizer */}
+            <div className="flex items-center border border-gray-200 rounded-sm overflow-hidden text-xs">
               <button
                 onClick={() => setFontSize('normal')}
-                className={`px-2 py-0.5 rounded ${fontSize === 'normal' ? 'bg-white shadow-xs' : ''}`}
+                className={`px-2.5 py-1.5 font-bold min-h-[36px] ${fontSize === 'normal' ? 'bg-[#0E5B44] text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                title="Normal text"
               >
                 A
               </button>
               <button
                 onClick={() => setFontSize('large')}
-                className={`px-2 py-0.5 rounded ${fontSize === 'large' ? 'bg-white shadow-xs' : ''}`}
+                className={`px-2.5 py-1.5 font-bold min-h-[36px] ${fontSize === 'large' ? 'bg-[#0E5B44] text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                title="Large text"
               >
                 A+
               </button>
-              <button
-                onClick={() => setFontSize('xlarge')}
-                className={`px-2 py-0.5 rounded ${fontSize === 'xlarge' ? 'bg-white shadow-xs' : ''}`}
-              >
-                A++
-              </button>
             </div>
 
-            {/* Audio Summary Listen Mode */}
+            {/* Audio Voice Player */}
             <button
               onClick={() => setIsPlayingAudio(!isPlayingAudio)}
-              className={`p-1.5 rounded-full transition-colors flex items-center space-x-1 text-xs font-bold ${
-                isPlayingAudio ? 'bg-emerald-100 text-[#0E5B44]' : 'hover:bg-gray-100 text-gray-600'
+              className={`p-2 rounded-full transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center ${
+                isPlayingAudio ? 'bg-[#0E5B44] text-white' : 'hover:bg-gray-100 text-gray-600'
               }`}
-              title="Listen to automated article summary"
+              title={isPlayingAudio ? 'Mute AI read' : 'Listen to story'}
             >
               {isPlayingAudio ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-              <span className="hidden md:inline">{isPlayingAudio ? 'Pause' : 'Listen'}</span>
             </button>
 
             {/* Bookmark */}
             <button
               onClick={() => setBookmarked(!bookmarked)}
-              className={`p-1.5 rounded-full hover:bg-gray-100 transition-colors ${
-                bookmarked ? 'text-[#F02D5E]' : 'text-gray-600'
-              }`}
+              className="p-2 rounded-full hover:bg-gray-100 text-gray-600 transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center"
               title="Save story"
             >
-              <Bookmark className={`w-4 h-4 ${bookmarked ? 'fill-current' : ''}`} />
+              <Bookmark className={`w-4 h-4 ${bookmarked ? 'fill-current text-[#F02D5E]' : ''}`} />
             </button>
 
             {/* Share */}
             <button
               onClick={handleCopyLink}
-              className="p-1.5 rounded-full hover:bg-gray-100 text-gray-600 transition-colors relative"
+              className="p-2 rounded-full hover:bg-gray-100 text-gray-600 transition-colors relative min-w-[38px] min-h-[38px] flex items-center justify-center"
               title="Copy share link"
             >
               {copiedLink ? <Check className="w-4 h-4 text-emerald-600" /> : <Share2 className="w-4 h-4" />}
@@ -158,7 +150,7 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
             {/* Close */}
             <button
               onClick={onClose}
-              className="p-1.5 rounded-full hover:bg-gray-200 text-gray-700 transition-colors ml-2"
+              className="p-2 rounded-full hover:bg-gray-200 text-gray-700 transition-colors ml-1 min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="Close article"
             >
               <X className="w-5 h-5" />
@@ -168,13 +160,13 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
 
         {/* Audio Player Simulated Bar */}
         {isPlayingAudio && (
-          <div className="bg-[#0E5B44] text-white px-4 py-2.5 flex items-center justify-between text-xs">
+          <div className="bg-[#0E5B44] text-white px-3 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between text-xs">
             <div className="flex items-center space-x-2">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
               <span><strong>Americana Audio:</strong> AI voice synthesized briefing running at 1.0x</span>
             </div>
             <div className="flex items-center space-x-2">
-              <div className="w-24 bg-white/20 h-1.5 rounded-full overflow-hidden">
+              <div className="w-20 sm:w-24 bg-white/20 h-1.5 rounded-full overflow-hidden">
                 <div className="bg-emerald-300 h-full w-2/3 animate-pulse" />
               </div>
               <button 
@@ -188,7 +180,7 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
         )}
 
         {/* Article Body Content */}
-        <article className="p-4 sm:p-8 max-w-3xl mx-auto w-full">
+        <article className="p-3.5 sm:p-8 max-w-3xl mx-auto w-full">
           {/* Prefix badge */}
           {article.headlinePrefix && (
             <div className="font-headline font-black text-xs sm:text-sm uppercase tracking-wider text-[#E0292B] mb-2">
@@ -203,28 +195,28 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
 
           {/* Subtitle / Deck */}
           {article.subtitle && (
-            <p className="text-gray-600 font-medium text-base sm:text-xl leading-snug mb-5">
+            <p className="text-gray-600 font-medium text-sm sm:text-xl leading-snug mb-5">
               {article.subtitle}
             </p>
           )}
 
           {/* Author Byline & Timestamps */}
-          <div className="flex items-center justify-between py-3.5 border-y border-gray-200 mb-6 text-xs text-gray-600">
-            <div className="flex items-center space-x-3">
+          <div className="flex items-center justify-between py-3 border-y border-gray-200 mb-5 text-xs text-gray-600">
+            <div className="flex items-center space-x-2.5 sm:space-x-3">
               <img
                 src={article.author.avatar}
                 alt={article.author.name}
-                className="w-10 h-10 rounded-full object-cover border border-gray-200"
+                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover border border-gray-200"
               />
               <div>
-                <div className="font-bold text-gray-900 text-sm">{article.author.name}</div>
-                <div className="text-gray-500">{article.author.role}</div>
+                <div className="font-bold text-gray-900 text-xs sm:text-sm">{article.author.name}</div>
+                <div className="text-gray-500 text-[11px] sm:text-xs">{article.author.role}</div>
               </div>
             </div>
 
             <div className="text-right">
               <div className="font-semibold text-gray-900">{article.timeAgo}</div>
-              <div className="text-[11px] text-gray-400">
+              <div className="text-[10px] sm:text-[11px] text-gray-400">
                 {new Date(article.publishedAt).toLocaleDateString('en-US', {
                   month: 'short',
                   day: 'numeric',
@@ -242,161 +234,132 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
               className="w-full max-h-[460px] object-cover"
             />
             {article.imageCaption && (
-              <p className="p-2.5 bg-gray-50 text-[11px] text-gray-500 italic border-t border-gray-200">
+              <p className="p-2 sm:p-2.5 bg-gray-50 text-[11px] text-gray-500 italic border-t border-gray-200">
                 {article.imageCaption}
               </p>
             )}
           </div>
 
-          {/* AEO / GEO Answer Engine Takeaways Box (Perplexity / SearchGPT / Google AI) */}
-          <div className="my-6 bg-emerald-50/70 border-l-4 border-[#0E5B44] p-4 sm:p-5 rounded-r-md">
-            <div className="flex items-center space-x-2 text-[#0E5B44] mb-2 font-bold text-xs uppercase tracking-wider">
-              <Sparkles className="w-4 h-4" />
-              <span>AEO Executive Summary • Instant Answer Brief</span>
+          {/* AEO Quick Takeaways Box */}
+          {article.aeoQuickTakeaways && article.aeoQuickTakeaways.length > 0 && (
+            <div className="bg-emerald-50/60 border-l-4 border-[#0E5B44] p-3.5 sm:p-4 my-5 sm:my-6 rounded-r">
+              <div className="flex items-center space-x-2 text-[#0E5B44] font-black uppercase text-xs tracking-wider mb-2">
+                <Sparkles className="w-4 h-4" />
+                <span>Executive Intelligence Brief & Key Takeaways</span>
+              </div>
+              <ul className="space-y-1.5 text-xs sm:text-sm text-gray-800 list-disc list-inside">
+                {article.aeoQuickTakeaways.map((takeaway, idx) => (
+                  <li key={idx} className="leading-relaxed">
+                    {takeaway}
+                  </li>
+                ))}
+              </ul>
             </div>
-            <ul className="space-y-1.5 text-xs sm:text-sm text-gray-800 list-disc list-inside">
-              {article.aeoQuickTakeaways.map((takeaway, idx) => (
-                <li key={idx} className="leading-relaxed">
-                  <span className="font-semibold">{takeaway}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          )}
 
-          {/* Editorial Content with Smart Contextual Backlinks */}
-          <div className={`space-y-4 font-serif-body text-gray-800 ${fontClasses[fontSize]}`}>
-            {article.content.map((paragraph, idx) => (
-              <p key={idx} className="leading-relaxed">
+          {/* Paragraphs with Font Scaling */}
+          <div className={`space-y-4 sm:space-y-5 font-serif-body text-gray-800 ${fontClasses[fontSize]}`}>
+            {article.content.map((paragraph, index) => (
+              <p key={index} className="leading-relaxed">
                 {paragraph}
               </p>
             ))}
           </div>
 
-          {/* Extensive Contextual Backlinks Directory (Authority SEO Boost) */}
-          <div className="mt-8 pt-6 border-t border-gray-200">
-            <div className="flex items-center space-x-2 text-gray-900 font-headline font-black uppercase text-sm mb-3">
-              <LinkIcon className="w-4 h-4 text-[#0E5B44]" />
-              <span>Verified Primary Sources & Editorial Backlinks</span>
+          {/* Sourced Backlinks Verification Matrix */}
+          {article.backlinks && article.backlinks.length > 0 && (
+            <div className="mt-8 pt-5 border-t border-gray-200">
+              <div className="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">
+                <LinkIcon className="w-3.5 h-3.5" />
+                <span>Primary Document Backlinks & Investigative Sources</span>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                {article.backlinks.map((link, idx) => (
+                  <a
+                    key={idx}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2.5 rounded bg-gray-50 hover:bg-emerald-50 border border-gray-200 transition-colors flex items-center justify-between text-xs text-gray-700 hover:text-[#0E5B44]"
+                  >
+                    <span className="font-semibold truncate mr-2">{link.text}</span>
+                    <ExternalLink className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+                  </a>
+                ))}
+              </div>
             </div>
-            <p className="text-xs text-gray-500 mb-3">
-              Americana Digest grounds every investigation in primary public dockets, government filings, and peer-reviewed research:
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-              {article.backlinks.map((link, idx) => (
-                <a
-                  key={idx}
-                  href={link.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="p-2.5 rounded bg-gray-50 hover:bg-emerald-50 border border-gray-200 hover:border-emerald-300 transition-colors flex items-center justify-between group"
-                >
-                  <div className="truncate mr-2">
-                    <span className="font-bold text-gray-900 group-hover:text-[#0E5B44] truncate block">
-                      {link.text}
-                    </span>
-                    <span className="text-[10px] text-gray-400 font-mono">{link.source}</span>
-                  </div>
-                  <ExternalLink className="w-3.5 h-3.5 text-gray-400 group-hover:text-[#0E5B44] shrink-0" />
-                </a>
-              ))}
-            </div>
-          </div>
+          )}
 
-          {/* AEO Schema FAQ Section */}
+          {/* AEO FAQ Section */}
           {article.faq && article.faq.length > 0 && (
-            <div className="mt-8 bg-gray-50 p-5 rounded-md border border-gray-200">
-              <div className="flex items-center space-x-2 text-gray-900 font-headline font-black uppercase text-sm mb-3">
+            <div className="mt-8 p-4 bg-gray-50 rounded-xs border border-gray-200">
+              <div className="flex items-center space-x-2 text-gray-900 font-headline font-black uppercase text-base sm:text-lg mb-3">
                 <HelpCircle className="w-4 h-4 text-[#0E5B44]" />
-                <span>Frequently Asked Questions (AEO Grounded)</span>
+                <span>Frequently Asked Questions & Official Inquiries</span>
               </div>
               <div className="space-y-3">
                 {article.faq.map((item, idx) => (
-                  <div key={idx} className="bg-white p-3.5 rounded border border-gray-200">
-                    <h3 className="font-bold text-gray-900 text-xs sm:text-sm mb-1">{item.question}</h3>
-                    <p className="text-xs text-gray-600 leading-relaxed">{item.answer}</p>
+                  <div key={idx} className="text-xs sm:text-sm">
+                    <h4 className="font-bold text-gray-900 mb-1">{item.question}</h4>
+                    <p className="text-gray-600 leading-relaxed">{item.answer}</p>
                   </div>
                 ))}
               </div>
             </div>
           )}
 
-          {/* Automated Straight-to-Email Newsletter Inline Capture */}
-          <div className="my-8 bg-[#0E5B44] text-white p-6 rounded-md text-center shadow-md">
-            <h3 className="font-headline font-black text-2xl uppercase tracking-tight text-white mb-2">
-              Never Miss A High-Velocity Scoop
-            </h3>
-            <p className="text-emerald-100 text-xs sm:text-sm max-w-md mx-auto mb-4">
-              Get tomorrow morning’s unredacted intelligence briefing dispatched straight from <span className="underline font-bold text-white">support@americanadigest.blog</span>.
-            </p>
-            <button
-              onClick={onOpenSubscriberModal}
-              className="bg-[#F02D5E] hover:bg-[#d92250] text-white font-black text-xs sm:text-sm uppercase tracking-wider py-2.5 px-6 rounded-full shadow-md transition-transform active:scale-95"
-            >
-              Subscribe With 1-Click
-            </button>
-          </div>
-
-          {/* Tags */}
-          <div className="flex flex-wrap gap-1.5 my-6">
-            {article.tags.map((tag) => (
-              <span
-                key={tag}
-                className="text-[11px] font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 px-2.5 py-1 rounded transition-colors cursor-pointer"
-              >
-                #{tag}
-              </span>
-            ))}
-          </div>
-
-          {/* Interactive Comments Section */}
+          {/* Interactive Verified Comment Stream */}
           <div className="mt-10 pt-6 border-t border-gray-200">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="font-headline font-black text-xl uppercase tracking-tight text-gray-900 flex items-center space-x-2">
-                <MessageSquare className="w-5 h-5 text-[#0E5B44]" />
-                <span>Reader Perspectives ({comments.length})</span>
-              </h3>
-              <span className="text-xs text-gray-400">Moderated Under Civil Standards</span>
+              <div className="flex items-center space-x-2">
+                <MessageSquare className="w-4 h-4 text-[#0E5B44]" />
+                <h3 className="font-headline font-black text-base sm:text-lg uppercase tracking-tight text-gray-900">
+                  Reader Discussion ({comments.length})
+                </h3>
+              </div>
+              <span className="text-[11px] text-gray-400">Moderated newsroom feed</span>
             </div>
 
             <form onSubmit={handleAddComment} className="mb-6 space-y-2">
-              <input
-                type="text"
-                placeholder="Your Name (Optional)"
-                value={commenterName}
-                onChange={(e) => setCommenterName(e.target.value)}
-                className="w-full border border-gray-300 rounded px-3 py-1.5 text-xs focus:ring-1 focus:ring-[#0E5B44] focus:outline-none"
-              />
-              <div className="flex space-x-2">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                <input
+                  type="text"
+                  placeholder="Your Name / Credential"
+                  value={commenterName}
+                  onChange={(e) => setCommenterName(e.target.value)}
+                  className="sm:col-span-1 border border-gray-300 rounded px-3 py-2 text-xs focus:ring-1 focus:ring-[#0E5B44] focus:outline-none"
+                />
                 <input
                   type="text"
                   required
-                  placeholder="Add your informed perspective to this investigation..."
+                  placeholder="Add your verified analysis to this story..."
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
-                  className="flex-1 border border-gray-300 rounded px-3 py-2 text-xs focus:ring-1 focus:ring-[#0E5B44] focus:outline-none"
+                  className="sm:col-span-2 border border-gray-300 rounded px-3 py-2 text-xs focus:ring-1 focus:ring-[#0E5B44] focus:outline-none"
                 />
+              </div>
+              <div className="flex justify-end">
                 <button
                   type="submit"
-                  className="bg-[#0E5B44] hover:bg-[#083c2d] text-white px-4 py-2 rounded text-xs font-bold uppercase transition-colors shrink-0"
+                  className="bg-[#0E5B44] hover:bg-[#083c2d] text-white font-bold text-xs uppercase px-4 py-2 rounded flex items-center space-x-1.5"
                 >
-                  Post
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Submit Comment</span>
                 </button>
               </div>
             </form>
 
             <div className="space-y-3">
-              {comments.map((c, idx) => (
-                <div key={idx} className="p-3.5 bg-gray-50 rounded border border-gray-200 text-xs">
+              {comments.map((c, i) => (
+                <div key={i} className="p-3 bg-gray-50 rounded border border-gray-100 text-xs">
                   <div className="flex items-center justify-between mb-1">
                     <span className="font-bold text-gray-900">{c.name}</span>
-                    <span className="text-[11px] text-gray-400">{c.time}</span>
+                    <span className="text-[10px] text-gray-400">{c.time}</span>
                   </div>
-                  <p className="text-gray-700 leading-relaxed">{c.text}</p>
-                  <div className="mt-2 flex items-center space-x-2 text-gray-400">
-                    <button className="flex items-center space-x-1 hover:text-gray-700">
-                      <ThumbsUp className="w-3 h-3" />
-                      <span>{c.likes}</span>
-                    </button>
+                  <p className="text-gray-700 leading-relaxed mb-2">{c.text}</p>
+                  <div className="flex items-center space-x-1 text-gray-500 hover:text-[#0E5B44] cursor-pointer text-[11px]">
+                    <ThumbsUp className="w-3 h-3" />
+                    <span>{c.likes}</span>
                   </div>
                 </div>
               ))}
@@ -404,28 +367,31 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
           </div>
 
           {/* Related Articles Carousel / Grid */}
-          <div className="mt-12 pt-8 border-t-2 border-gray-900">
+          <div className="mt-10 pt-6 border-t-2 border-gray-900">
             <h3 className="font-headline font-black text-xl uppercase tracking-tight text-gray-900 mb-4">
-              More In-Depth Coverage
+              More Stories From Our Desks
             </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {relatedArticles.slice(0, 3).map((rel) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {relatedArticles.slice(0, 4).map((rel) => (
                 <div
                   key={rel.id}
-                  onClick={() => onOpenArticle(rel)}
-                  className="cursor-pointer group"
+                  onClick={() => {
+                    onOpenArticle(rel);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="cursor-pointer group flex space-x-3 items-start border-b border-gray-100 pb-3"
                 >
                   <img
                     src={rel.imageUrl}
                     alt={rel.title}
-                    className="w-full aspect-16/10 object-cover rounded-xs mb-2 group-hover:opacity-90"
+                    className="w-20 h-16 object-cover rounded-xs shrink-0 bg-gray-100"
                   />
-                  <span className="text-[10px] font-black uppercase text-[#E0292B]">
-                    {rel.headlinePrefix || rel.category}
-                  </span>
-                  <h4 className="font-headline font-black text-sm uppercase text-gray-900 group-hover:text-[#0E5B44] leading-snug line-clamp-2 mt-0.5">
-                    {rel.title}
-                  </h4>
+                  <div>
+                    <h4 className="font-headline font-black text-xs sm:text-sm uppercase tracking-tight text-gray-900 group-hover:text-[#0E5B44] leading-snug line-clamp-2">
+                      {rel.title}
+                    </h4>
+                    <span className="text-[10px] text-gray-400 mt-1 block">{rel.timeAgo}</span>
+                  </div>
                 </div>
               ))}
             </div>

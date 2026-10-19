@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Menu, X, Search, Mail, Heart } from 'lucide-react';
 import { Category } from '../types';
 
@@ -24,6 +24,18 @@ export const Header: React.FC<HeaderProps> = ({
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [showSearchInput, setShowSearchInput] = useState(false);
 
+  // Lock body scroll when drawer is open on mobile
+  useEffect(() => {
+    if (drawerOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [drawerOpen]);
+
   // Active editorial categories matching real published coverage
   const categories: { label: string; value: Category; path: string }[] = [
     { label: 'HOME', value: 'All', path: '/' },
@@ -37,20 +49,20 @@ export const Header: React.FC<HeaderProps> = ({
   return (
     <>
       <header className="sticky top-0 z-40 bg-[#0E5B44] text-white shadow-md">
-        {/* Main Header Bar */}
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
-          {/* Left: Mobile Drawer Button & Search */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
+        {/* Main Header Bar with safe-area padding */}
+        <div className="max-w-7xl mx-auto px-2.5 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
+          {/* Left: Mobile Drawer Button & Search with 48px touch targets */}
+          <div className="flex items-center space-x-1 sm:space-x-3">
             <button
               onClick={() => setDrawerOpen(true)}
-              className="p-1.5 hover:bg-[#083c2d] rounded-md transition-colors"
+              className="p-2 sm:p-2.5 hover:bg-[#083c2d] active:bg-[#062c20] rounded-md transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="Open menu"
             >
               <Menu className="w-6 h-6 text-white" />
             </button>
             <button
               onClick={() => setShowSearchInput(!showSearchInput)}
-              className="p-1.5 hover:bg-[#083c2d] rounded-md transition-colors"
+              className="p-2 sm:p-2.5 hover:bg-[#083c2d] active:bg-[#062c20] rounded-md transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center"
               aria-label="Toggle search"
             >
               <Search className="w-5 h-5 text-emerald-100 hover:text-white" />
@@ -66,29 +78,29 @@ export const Header: React.FC<HeaderProps> = ({
                 onSelectCategory('All');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="inline-block text-left group"
+              className="inline-block text-left group py-1"
             >
-              <span className="font-logo text-2xl sm:text-3xl md:text-4xl tracking-tighter text-white font-black group-hover:opacity-95 transition-opacity">
+              <span className="font-logo text-xl sm:text-3xl md:text-4xl tracking-tighter text-white font-black group-hover:opacity-95 transition-opacity whitespace-nowrap">
                 AMERICANA DIGEST
               </span>
             </a>
           </div>
 
           {/* Right: Support Us & Subscriber Actions */}
-          <div className="flex items-center space-x-2 sm:space-x-3">
-            {/* Support Us Button (Exact HuffPost Pink Pill) */}
+          <div className="flex items-center space-x-1.5 sm:space-x-3">
+            {/* Support Us Button */}
             <button
               onClick={onOpenSupport}
-              className="bg-[#F02D5E] hover:bg-[#d92250] text-white font-extrabold text-xs sm:text-sm px-3.5 sm:px-5 py-1.5 rounded-full uppercase tracking-wider shadow-sm transition-transform active:scale-95 flex items-center space-x-1"
+              className="bg-[#F02D5E] hover:bg-[#d92250] text-white font-extrabold text-xs sm:text-sm px-3 sm:px-5 py-2 sm:py-1.5 rounded-full uppercase tracking-wider shadow-sm transition-transform active:scale-95 flex items-center space-x-1 min-h-[38px]"
             >
               <Heart className="w-3.5 h-3.5 fill-current hidden sm:inline" />
-              <span>SUPPORT US</span>
+              <span>SUPPORT</span>
             </button>
 
             {/* Subscribe Free */}
             <button
               onClick={onOpenSubscriberModal}
-              className="bg-emerald-800 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center space-x-1.5"
+              className="bg-emerald-800 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold px-3 py-2 sm:py-1.5 rounded-full uppercase tracking-wider flex items-center space-x-1.5 min-h-[38px]"
             >
               <Mail className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">Subscribe</span>
@@ -98,21 +110,21 @@ export const Header: React.FC<HeaderProps> = ({
 
         {/* Search Expansion Bar */}
         {showSearchInput && (
-          <div className="bg-[#083c2d] px-4 py-2 border-t border-[#0e5b44]">
+          <div className="bg-[#083c2d] px-3 sm:px-4 py-2.5 border-t border-[#0e5b44] animate-fadeIn">
             <div className="max-w-2xl mx-auto flex items-center space-x-2">
-              <Search className="w-4 h-4 text-emerald-300" />
+              <Search className="w-4 h-4 text-emerald-300 shrink-0" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
                 placeholder="Search investigative articles, midterms, labor, economy..."
-                className="w-full bg-white/10 text-white placeholder-emerald-200 text-sm px-3 py-1.5 rounded focus:outline-none focus:ring-1 focus:ring-white"
+                className="w-full bg-white/10 text-white placeholder-emerald-200 text-sm px-3 py-2 rounded focus:outline-none focus:ring-1 focus:ring-white"
                 autoFocus
               />
               {searchQuery && (
                 <button
                   onClick={() => onSearchChange('')}
-                  className="text-xs text-emerald-300 hover:text-white"
+                  className="text-xs text-emerald-300 hover:text-white px-2 py-1"
                 >
                   Clear
                 </button>
@@ -133,7 +145,7 @@ export const Header: React.FC<HeaderProps> = ({
                     e.preventDefault();
                     onSelectCategory(cat.value);
                   }}
-                  className={`transition-colors whitespace-nowrap hover:text-white ${
+                  className={`transition-colors whitespace-nowrap hover:text-white py-1 ${
                     currentCategory === cat.value ? 'text-white border-b-2 border-white pb-0.5' : 'text-emerald-200/90'
                   }`}
                 >
@@ -145,7 +157,7 @@ export const Header: React.FC<HeaderProps> = ({
             <div className="flex items-center space-x-4 pl-4 border-l border-emerald-800">
               <button
                 onClick={onOpenSubmitTip}
-                className="text-yellow-300 hover:text-yellow-100 font-extrabold flex items-center space-x-1"
+                className="text-yellow-300 hover:text-yellow-100 font-extrabold flex items-center space-x-1 py-1"
               >
                 <span>SUBMIT A TIP</span>
               </button>
@@ -158,7 +170,7 @@ export const Header: React.FC<HeaderProps> = ({
       {drawerOpen && (
         <div className="fixed inset-0 z-50 flex">
           <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
+            className="fixed inset-0 bg-black/70 backdrop-blur-xs transition-opacity"
             onClick={() => setDrawerOpen(false)}
           />
           <div className="relative w-80 max-w-[85vw] bg-[#0E5B44] text-white flex flex-col h-full shadow-2xl z-10">
@@ -167,7 +179,7 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="font-logo text-xl italic font-black">AMERICANA DIGEST</span>
               <button
                 onClick={() => setDrawerOpen(false)}
-                className="p-1 hover:bg-[#083c2d] rounded-md"
+                className="p-2 hover:bg-[#083c2d] rounded-md min-w-[44px] min-h-[44px] flex items-center justify-center"
                 aria-label="Close menu"
               >
                 <X className="w-6 h-6 text-white" />
@@ -182,9 +194,9 @@ export const Header: React.FC<HeaderProps> = ({
                   setDrawerOpen(false);
                   onOpenSubscriberModal();
                 }}
-                className="w-full bg-[#F02D5E] text-white font-bold text-xs py-2 px-3 rounded-full uppercase tracking-wider flex items-center justify-center space-x-1.5"
+                className="w-full bg-[#F02D5E] text-white font-bold text-xs py-2.5 px-3 rounded-full uppercase tracking-wider flex items-center justify-center space-x-1.5 min-h-[44px]"
               >
-                <Mail className="w-3.5 h-3.5" />
+                <Mail className="w-4 h-4" />
                 <span>Join Subscriber Dispatch</span>
               </button>
               <p className="text-[11px] text-emerald-300/80 mt-1.5 text-center">
@@ -206,7 +218,7 @@ export const Header: React.FC<HeaderProps> = ({
                     onSelectCategory(cat.value);
                     setDrawerOpen(false);
                   }}
-                  className={`w-full text-left px-5 py-3 text-sm font-bold uppercase tracking-wide border-b border-emerald-800/40 hover:bg-[#083c2d] transition-colors flex items-center justify-between ${
+                  className={`w-full text-left px-5 py-3.5 text-sm font-bold uppercase tracking-wide border-b border-emerald-800/40 hover:bg-[#083c2d] active:bg-[#062c20] transition-colors flex items-center justify-between min-h-[48px] ${
                     currentCategory === cat.value ? 'bg-[#083c2d] text-white' : 'text-emerald-100'
                   }`}
                 >
@@ -223,7 +235,7 @@ export const Header: React.FC<HeaderProps> = ({
                   setDrawerOpen(false);
                   onOpenSubmitTip();
                 }}
-                className="w-full text-left px-5 py-3 text-sm font-bold text-yellow-300 hover:bg-[#083c2d]"
+                className="w-full text-left px-5 py-3.5 text-sm font-bold text-yellow-300 hover:bg-[#083c2d] active:bg-[#062c20] min-h-[48px] flex items-center"
               >
                 Submit A Confidential Tip
               </button>
@@ -232,7 +244,7 @@ export const Header: React.FC<HeaderProps> = ({
                   setDrawerOpen(false);
                   onOpenSupport();
                 }}
-                className="w-full text-left px-5 py-3 text-sm font-bold text-pink-300 hover:bg-[#083c2d]"
+                className="w-full text-left px-5 py-3.5 text-sm font-bold text-pink-300 hover:bg-[#083c2d] active:bg-[#062c20] min-h-[48px] flex items-center"
               >
                 Support Independent Journalism
               </button>
