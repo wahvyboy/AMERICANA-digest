@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Send, ShieldCheck, Lock, Upload, CheckCircle2, X } from 'lucide-react';
+import { ShieldCheck, Lock, CheckCircle2, X, Mail } from 'lucide-react';
 
 interface SubmitTipBannerProps {
   onOpenModal: () => void;
@@ -10,7 +10,6 @@ export const SubmitTipBanner: React.FC<SubmitTipBannerProps> = ({ onOpenModal })
     <div className="max-w-4xl mx-auto px-4 my-8">
       <div className="bg-gray-50 border border-gray-200 p-5 rounded-xs text-center flex flex-col items-center justify-center">
         <div className="flex items-center space-x-2 text-gray-900 mb-1">
-          {/* Hand/Megaphone Icon */}
           <span className="text-2xl" role="img" aria-label="hand">
             🗣️
           </span>
@@ -19,7 +18,7 @@ export const SubmitTipBanner: React.FC<SubmitTipBannerProps> = ({ onOpenModal })
           </span>
         </div>
         <p className="text-gray-700 text-sm sm:text-base font-normal">
-          Do you have info to share with Americana Digest reporters?{' '}
+          Do you have confidential intelligence to share with Americana Digest reporters?{' '}
           <button
             onClick={onOpenModal}
             className="text-gray-900 font-bold underline hover:text-[#0E5B44] transition-colors"
@@ -38,7 +37,7 @@ interface SubmitTipModalProps {
 }
 
 export const SubmitTipModal: React.FC<SubmitTipModalProps> = ({ isOpen, onClose }) => {
-  const [tipCategory, setTipCategory] = useState('Government & Politics');
+  const [tipCategory, setTipCategory] = useState('Government & National Politics');
   const [subject, setSubject] = useState('');
   const [details, setDetails] = useState('');
   const [contactEmail, setContactEmail] = useState('');
@@ -49,14 +48,30 @@ export const SubmitTipModal: React.FC<SubmitTipModalProps> = ({ isOpen, onClose 
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Prepare mailto directly to support@americanadigest.blog
+    const mailSubject = `[NEWSROOM TIP] ${subject}`;
+    const mailBody = [
+      `Americana Digest Confidential Tip Transmission`,
+      `Desk: ${tipCategory}`,
+      `Anonymous: ${isAnonymous ? 'YES' : 'NO'}`,
+      `Contact: ${isAnonymous ? 'Omitted by source' : contactEmail}`,
+      ``,
+      `--- TIP DETAILS ---`,
+      details,
+      ``,
+      `Transmission Date: ${new Date().toISOString()}`
+    ].join('\n');
+
+    const mailtoUrl = `mailto:support@americanadigest.blog?subject=${encodeURIComponent(mailSubject)}&body=${encodeURIComponent(mailBody)}`;
+    
+    try {
+      window.location.href = mailtoUrl;
+    } catch (err) {
+      console.warn('Mailto error:', err);
+    }
+
     setSubmitted(true);
-    setTimeout(() => {
-      // Auto close after 3s
-      setTimeout(() => {
-        setSubmitted(false);
-        onClose();
-      }, 2500);
-    }, 500);
   };
 
   return (
@@ -65,22 +80,30 @@ export const SubmitTipModal: React.FC<SubmitTipModalProps> = ({ isOpen, onClose 
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-1.5 text-gray-500 hover:text-gray-800 rounded-full"
+          aria-label="Close modal"
         >
           <X className="w-5 h-5" />
         </button>
 
         {submitted ? (
-          <div className="text-center py-8">
+          <div className="text-center py-6">
             <div className="w-14 h-14 bg-emerald-100 text-[#0E5B44] rounded-full flex items-center justify-center mx-auto mb-4">
               <CheckCircle2 className="w-8 h-8" />
             </div>
             <h3 className="font-headline font-black text-2xl text-gray-900 uppercase">
-              Tip Transmitted Securely
+              Tip Transmission Prepared
             </h3>
             <p className="text-gray-600 text-sm mt-2 max-w-md mx-auto">
-              Your confidential dispatch has been routed to the Americana Digest Investigative Desk under PGP-encrypted protocols.
+              Your email client was opened with your pre-formatted tip addressed directly to <span className="font-bold text-[#0E5B44]">support@americanadigest.blog</span>.
             </p>
-            <p className="text-xs text-gray-400 mt-4">Direct Desk: support@americanadigest.blog</p>
+            <div className="mt-4 pt-4 border-t border-gray-100 flex justify-center">
+              <button
+                onClick={onClose}
+                className="bg-[#0E5B44] text-white text-xs font-bold uppercase py-2 px-6 rounded"
+              >
+                Close
+              </button>
+            </div>
           </div>
         ) : (
           <div>
@@ -91,7 +114,7 @@ export const SubmitTipModal: React.FC<SubmitTipModalProps> = ({ isOpen, onClose 
               </span>
             </div>
             <p className="text-xs text-gray-600 mb-4">
-              Americana Digest protects source confidentiality under Shield Law provisions. Anonymous transmissions are scrubbed of IP headers.
+              Americana Digest protects source confidentiality under Shield Law provisions. Tips are received directly at <strong className="text-gray-800">support@americanadigest.blog</strong>.
             </p>
 
             <form onSubmit={handleSubmit} className="space-y-4 text-xs sm:text-sm">
@@ -104,9 +127,9 @@ export const SubmitTipModal: React.FC<SubmitTipModalProps> = ({ isOpen, onClose 
                 >
                   <option>Government & National Politics</option>
                   <option>Labor & Corporate Misconduct</option>
-                  <option>Defense & Intelligence Leaks</option>
-                  <option>Consumer Fraud & Safety</option>
-                  <option>Culture & Entertainment Scoop</option>
+                  <option>Defense & Intelligence</option>
+                  <option>Consumer Protection & Safety</option>
+                  <option>Tech & Cyber Investigations</option>
                 </select>
               </div>
 
@@ -149,10 +172,10 @@ export const SubmitTipModal: React.FC<SubmitTipModalProps> = ({ isOpen, onClose 
 
               {!isAnonymous && (
                 <div>
-                  <label className="block text-gray-700 font-bold mb-1">Contact Email / Signal Username</label>
+                  <label className="block text-gray-700 font-bold mb-1">Contact Email / Phone</label>
                   <input
                     type="text"
-                    placeholder="name@proton.me or +1..."
+                    placeholder="you@example.com or +1..."
                     value={contactEmail}
                     onChange={(e) => setContactEmail(e.target.value)}
                     className="w-full border border-gray-300 rounded px-3 py-2 text-gray-900 focus:ring-1 focus:ring-[#0E5B44] focus:outline-none"
@@ -162,10 +185,10 @@ export const SubmitTipModal: React.FC<SubmitTipModalProps> = ({ isOpen, onClose 
 
               <button
                 type="submit"
-                className="w-full bg-[#0E5B44] hover:bg-[#083c2d] text-white font-black py-2.5 px-4 rounded text-xs uppercase tracking-wider transition-colors flex items-center justify-center space-x-2"
+                className="w-full bg-[#0E5B44] hover:bg-[#083c2d] text-white font-black py-2.5 px-4 rounded text-xs uppercase tracking-wider transition-colors flex items-center justify-center space-x-2 shadow-sm"
               >
                 <Lock className="w-4 h-4" />
-                <span>Submit Encrypted Intelligence</span>
+                <span>Prepare & Transmit Tip To support@americanadigest.blog</span>
               </button>
             </form>
           </div>

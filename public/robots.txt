@@ -1,0 +1,33 @@
+# Americana Digest - Robots Exclusion Protocol
+# Optimized for Googlebot, Bingbot, and AI Search Answer Engines (AEO / GEO)
+
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin/
+
+# Explicitly welcome Search Engine & AI Citations
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-News
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Canonical Sitemaps
+Sitemap: https://americanadigest.blog/sitemap.xml
+Sitemap: https://americanadigest.blog/news-sitemap.xml

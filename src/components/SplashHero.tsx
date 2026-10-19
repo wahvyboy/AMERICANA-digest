@@ -47,11 +47,11 @@ export const SplashHero: React.FC<SplashHeroProps> = ({
             {/* Left: Volodymyr Zelenskyy */}
             <div className="relative overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1579208575657-c595a05383b7?auto=format&fit=crop&w=700&q=80"
-                alt="Volodymyr Zelenskyy"
-                className="w-full h-full object-cover object-center group-hover:scale-102 transition-transform duration-500"
+                src="/images/zelenskyy.jpg"
+                alt="President Volodymyr Zelenskyy"
+                className="w-full h-full object-cover object-top group-hover:scale-102 transition-transform duration-500"
               />
-              <div className="absolute bottom-2 left-2 bg-black/70 text-white text-[10px] sm:text-xs font-semibold px-2 py-0.5 rounded">
+              <div className="absolute bottom-2 left-2 bg-black/80 backdrop-blur-xs text-white text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded shadow">
                 Volodymyr Zelenskyy
               </div>
             </div>
@@ -59,11 +59,11 @@ export const SplashHero: React.FC<SplashHeroProps> = ({
             {/* Right: Elon Musk */}
             <div className="relative overflow-hidden">
               <img
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=700&q=80"
+                src="/images/elon-musk.jpg"
                 alt="Elon Musk"
                 className="w-full h-full object-cover object-top group-hover:scale-102 transition-transform duration-500 filter contrast-105"
               />
-              <div className="absolute bottom-2 right-2 bg-black/70 text-white text-[10px] sm:text-xs font-semibold px-2 py-0.5 rounded">
+              <div className="absolute bottom-2 right-2 bg-black/80 backdrop-blur-xs text-white text-[10px] sm:text-xs font-semibold px-2.5 py-1 rounded shadow">
                 Elon Musk
               </div>
             </div>

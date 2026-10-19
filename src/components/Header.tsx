@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Menu, X, Search, Mail, Heart, CheckCircle2, Inbox } from 'lucide-react';
+import { Menu, X, Search, Mail, Heart } from 'lucide-react';
 import { Category } from '../types';
 
 interface HeaderProps {
@@ -7,12 +7,9 @@ interface HeaderProps {
   onSelectCategory: (cat: Category) => void;
   onOpenSupport: () => void;
   onOpenSubscriberModal: () => void;
-  onOpenEmailInbox: () => void;
-  dispatchedEmailsCount: number;
   searchQuery: string;
   onSearchChange: (q: string) => void;
   onOpenSubmitTip: () => void;
-  onViewArchive: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -20,25 +17,21 @@ export const Header: React.FC<HeaderProps> = ({
   onSelectCategory,
   onOpenSupport,
   onOpenSubscriberModal,
-  onOpenEmailInbox,
-  dispatchedEmailsCount,
   searchQuery,
   onSearchChange,
   onOpenSubmitTip,
-  onViewArchive,
 }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [showSearchInput, setShowSearchInput] = useState(false);
 
-  const categories: Category[] = [
-    'All',
-    'Politics',
-    'Latest News',
-    'Life',
-    'Entertainment',
-    'Shopping',
-    'Voices',
-    'Business & Tech'
+  // Active editorial categories matching real published coverage
+  const categories: { label: string; value: Category; path: string }[] = [
+    { label: 'HOME', value: 'All', path: '/' },
+    { label: 'POLITICS', value: 'Politics', path: '/politics' },
+    { label: 'LATEST NEWS', value: 'Latest News', path: '/latest-news' },
+    { label: 'LIFE', value: 'Life', path: '/life' },
+    { label: 'SHOPPING', value: 'Shopping', path: '/shopping' },
+    { label: 'BUSINESS & TECH', value: 'Business & Tech', path: '/business-tech' }
   ];
 
   return (
@@ -66,8 +59,10 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Center: Signature HuffPost-Style Logo */}
           <div className="flex-1 text-center sm:text-left sm:ml-4">
-            <button
-              onClick={() => {
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
                 onSelectCategory('All');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
@@ -76,39 +71,27 @@ export const Header: React.FC<HeaderProps> = ({
               <span className="font-logo text-2xl sm:text-3xl md:text-4xl tracking-tighter text-white font-black group-hover:opacity-95 transition-opacity">
                 AMERICANA DIGEST
               </span>
-            </button>
+            </a>
           </div>
 
           {/* Right: Support Us & Subscriber Actions */}
           <div className="flex items-center space-x-2 sm:space-x-3">
-            {/* Automated Dispatch Email Inbox Viewer Button */}
-            <button
-              onClick={onOpenEmailInbox}
-              className="relative p-1.5 hover:bg-[#083c2d] rounded-full text-emerald-100 hover:text-white transition-colors"
-              title="View automated emails from support@americanadigest.blog"
-            >
-              <Inbox className="w-5 h-5" />
-              {dispatchedEmailsCount > 0 && (
-                <span className="absolute -top-1 -right-1 bg-[#F02D5E] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center animate-pulse">
-                  {dispatchedEmailsCount}
-                </span>
-              )}
-            </button>
-
             {/* Support Us Button (Exact HuffPost Pink Pill) */}
             <button
               onClick={onOpenSupport}
-              className="bg-[#F02D5E] hover:bg-[#d92250] text-white font-extrabold text-xs sm:text-sm px-3.5 sm:px-5 py-1.5 rounded-full uppercase tracking-wider shadow-sm transition-transform active:scale-95"
+              className="bg-[#F02D5E] hover:bg-[#d92250] text-white font-extrabold text-xs sm:text-sm px-3.5 sm:px-5 py-1.5 rounded-full uppercase tracking-wider shadow-sm transition-transform active:scale-95 flex items-center space-x-1"
             >
-              SUPPORT US
+              <Heart className="w-3.5 h-3.5 fill-current hidden sm:inline" />
+              <span>SUPPORT US</span>
             </button>
 
-            {/* Subscribe / Log In */}
+            {/* Subscribe Free */}
             <button
               onClick={onOpenSubscriberModal}
-              className="hidden sm:inline-block text-white text-xs sm:text-sm font-semibold hover:underline px-2 py-1"
+              className="bg-emerald-800 hover:bg-emerald-700 text-white text-xs sm:text-sm font-bold px-3 py-1.5 rounded-full uppercase tracking-wider flex items-center space-x-1.5"
             >
-              Subscribe Free
+              <Mail className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Subscribe</span>
             </button>
           </div>
         </div>
@@ -122,7 +105,7 @@ export const Header: React.FC<HeaderProps> = ({
                 type="text"
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                placeholder="Search 3,000+ investigative articles, midterms, labor, economy..."
+                placeholder="Search investigative articles, midterms, labor, economy..."
                 className="w-full bg-white/10 text-white placeholder-emerald-200 text-sm px-3 py-1.5 rounded focus:outline-none focus:ring-1 focus:ring-white"
                 autoFocus
               />
@@ -139,34 +122,32 @@ export const Header: React.FC<HeaderProps> = ({
         )}
 
         {/* Desktop Category Navigation */}
-        <nav className="hidden md:block bg-[#083c2d] border-t border-emerald-900/60 overflow-x-auto">
+        <nav className="hidden md:block bg-[#083c2d] border-t border-emerald-900/60 overflow-x-auto" aria-label="Main Navigation">
           <div className="max-w-7xl mx-auto px-6 flex items-center justify-between text-xs font-bold uppercase tracking-wider text-emerald-100">
             <div className="flex items-center space-x-6 py-2.5">
               {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => onSelectCategory(cat)}
+                <a
+                  key={cat.value}
+                  href={cat.path}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onSelectCategory(cat.value);
+                  }}
                   className={`transition-colors whitespace-nowrap hover:text-white ${
-                    currentCategory === cat ? 'text-white border-b-2 border-white pb-0.5' : 'text-emerald-200/90'
+                    currentCategory === cat.value ? 'text-white border-b-2 border-white pb-0.5' : 'text-emerald-200/90'
                   }`}
                 >
-                  {cat === 'All' ? 'HOME' : cat}
-                </button>
+                  {cat.label}
+                </a>
               ))}
             </div>
 
             <div className="flex items-center space-x-4 pl-4 border-l border-emerald-800">
               <button
-                onClick={onViewArchive}
-                className="text-emerald-300 hover:text-white font-extrabold flex items-center space-x-1"
-              >
-                <span>3,000 ARCHIVE (90 DAYS)</span>
-              </button>
-              <button
                 onClick={onOpenSubmitTip}
-                className="text-yellow-300 hover:text-yellow-100 font-extrabold"
+                className="text-yellow-300 hover:text-yellow-100 font-extrabold flex items-center space-x-1"
               >
-                SUBMIT A TIP
+                <span>SUBMIT A TIP</span>
               </button>
             </div>
           </div>
@@ -187,6 +168,7 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 onClick={() => setDrawerOpen(false)}
                 className="p-1 hover:bg-[#083c2d] rounded-md"
+                aria-label="Close menu"
               >
                 <X className="w-6 h-6 text-white" />
               </button>
@@ -194,7 +176,7 @@ export const Header: React.FC<HeaderProps> = ({
 
             {/* Subscriber Quick Box */}
             <div className="p-4 bg-[#083c2d] border-b border-emerald-800">
-              <p className="text-xs text-emerald-200 mb-2">Automated Morning Intelligence Brief</p>
+              <p className="text-xs text-emerald-200 mb-2">Morning Intelligence Brief</p>
               <button
                 onClick={() => {
                   setDrawerOpen(false);
@@ -206,7 +188,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <span>Join Subscriber Dispatch</span>
               </button>
               <p className="text-[11px] text-emerald-300/80 mt-1.5 text-center">
-                Dispatched from support@americanadigest.blog
+                Contact: support@americanadigest.blog
               </p>
             </div>
 
@@ -216,34 +198,26 @@ export const Header: React.FC<HeaderProps> = ({
                 Editorial Categories
               </div>
               {categories.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => {
-                    onSelectCategory(cat);
+                <a
+                  key={cat.value}
+                  href={cat.path}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    onSelectCategory(cat.value);
                     setDrawerOpen(false);
                   }}
                   className={`w-full text-left px-5 py-3 text-sm font-bold uppercase tracking-wide border-b border-emerald-800/40 hover:bg-[#083c2d] transition-colors flex items-center justify-between ${
-                    currentCategory === cat ? 'bg-[#083c2d] text-white' : 'text-emerald-100'
+                    currentCategory === cat.value ? 'bg-[#083c2d] text-white' : 'text-emerald-100'
                   }`}
                 >
-                  <span>{cat === 'All' ? 'Top Stories / Frontpage' : cat}</span>
-                  {currentCategory === cat && <span className="w-2 h-2 rounded-full bg-white" />}
-                </button>
+                  <span>{cat.label}</span>
+                  {currentCategory === cat.value && <span className="w-2 h-2 rounded-full bg-white" />}
+                </a>
               ))}
 
               <div className="px-4 pt-4 pb-2 text-[11px] font-bold uppercase tracking-wider text-emerald-300">
-                Special Desks & Tools
+                Newsroom Access
               </div>
-              <button
-                onClick={() => {
-                  setDrawerOpen(false);
-                  onViewArchive();
-                }}
-                className="w-full text-left px-5 py-3 text-sm font-bold text-emerald-200 hover:bg-[#083c2d] flex items-center justify-between"
-              >
-                <span>3,000 Articles Archive (Last 90 Days)</span>
-                <span className="text-xs bg-emerald-800 text-emerald-200 px-2 py-0.5 rounded">3,000</span>
-              </button>
               <button
                 onClick={() => {
                   setDrawerOpen(false);
@@ -256,23 +230,20 @@ export const Header: React.FC<HeaderProps> = ({
               <button
                 onClick={() => {
                   setDrawerOpen(false);
-                  onOpenEmailInbox();
+                  onOpenSupport();
                 }}
-                className="w-full text-left px-5 py-3 text-sm font-bold text-emerald-200 hover:bg-[#083c2d] flex items-center justify-between"
+                className="w-full text-left px-5 py-3 text-sm font-bold text-pink-300 hover:bg-[#083c2d]"
               >
-                <span>Automated Email Dispatch Box</span>
-                {dispatchedEmailsCount > 0 && (
-                  <span className="text-xs bg-[#F02D5E] text-white px-2 py-0.5 rounded-full">
-                    {dispatchedEmailsCount} New
-                  </span>
-                )}
+                Support Independent Journalism
               </button>
             </div>
 
             {/* Drawer Footer */}
             <div className="p-4 bg-[#083c2d] border-t border-emerald-800 text-xs text-emerald-300">
               <p className="font-semibold text-white">Americana Digest Editorial Bureau</p>
-              <p className="text-[11px] text-emerald-400 mt-1">support@americanadigest.blog</p>
+              <a href="mailto:support@americanadigest.blog" className="text-[11px] text-emerald-400 mt-1 block hover:underline">
+                support@americanadigest.blog
+              </a>
             </div>
           </div>
         </div>

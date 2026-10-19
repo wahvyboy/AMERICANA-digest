@@ -6,15 +6,13 @@ import { KeepPressFree } from './components/KeepPressFree';
 import { AmericanaVideo } from './components/AmericanaVideo';
 import { SubmitTipBanner, SubmitTipModal } from './components/SubmitTipBanner';
 import { ArticleModal } from './components/ArticleModal';
-import { EmailFollowupModal } from './components/EmailFollowupModal';
+import { SubscribeModal } from './components/SubscribeModal';
 import { SupportModal } from './components/SupportModal';
-import { NewsArchive3000 } from './components/NewsArchive3000';
 import { Footer } from './components/Footer';
-import { Article, Category, AutomatedEmail } from './types';
+import { Article, Category } from './types';
 import { CURATED_ARTICLES } from './data/curatedArticles';
 import { NEWS_DATABASE, queryNewsArchive } from './data/databaseEngine';
-import { getDispatchedEmails } from './services/subscriberService';
-import { Mail, Sparkles, TrendingUp, Clock, Eye, ArrowRight, Share2, ShieldCheck, Flame } from 'lucide-react';
+import { Eye, ArrowRight } from 'lucide-react';
 
 export default function App() {
   const [currentCategory, setCurrentCategory] = useState<Category>('All');
@@ -22,29 +20,55 @@ export default function App() {
   const [activeArticle, setActiveArticle] = useState<Article | null>(null);
   const [showSupportModal, setShowSupportModal] = useState(false);
   const [showSubscriberModal, setShowSubscriberModal] = useState(false);
-  const [showEmailInboxModal, setShowEmailInboxModal] = useState(false);
   const [showSubmitTipModal, setShowSubmitTipModal] = useState(false);
-  const [showArchiveSection, setShowArchiveSection] = useState(false);
-  const [dispatchedEmails, setDispatchedEmails] = useState<AutomatedEmail[]>([]);
-  const [newEmailToast, setNewEmailToast] = useState<AutomatedEmail | null>(null);
 
   useEffect(() => {
-    const emails = getDispatchedEmails();
-    setDispatchedEmails(emails);
+    // Check if URL has path or query ?article=ID
+    const handleUrlRoute = () => {
+      const path = window.location.pathname;
+      const params = new URLSearchParams(window.location.search);
+      const articleId = params.get('article');
 
-    // Check if URL has ?article=ID
-    const params = new URLSearchParams(window.location.search);
-    const articleId = params.get('article');
-    if (articleId) {
-      const found = NEWS_DATABASE.find(a => a.id === articleId) || CURATED_ARTICLES.find(a => a.id === articleId);
-      if (found) setActiveArticle(found);
-    }
+      if (articleId) {
+        const found = NEWS_DATABASE.find(a => a.id === articleId) || CURATED_ARTICLES.find(a => a.id === articleId);
+        if (found) {
+          setActiveArticle(found);
+          return;
+        }
+      }
+
+      // Check path-based route (e.g. /news/slug or /category)
+      if (path.startsWith('/news/')) {
+        const slug = path.replace('/news/', '').replace(/\/$/, '');
+        const matched = CURATED_ARTICLES.find(a => a.id === slug);
+        if (matched) {
+          setActiveArticle(matched);
+          return;
+        }
+      } else if (path === '/politics') {
+        setCurrentCategory('Politics');
+      } else if (path === '/latest-news') {
+        setCurrentCategory('Latest News');
+      } else if (path === '/life') {
+        setCurrentCategory('Life');
+      } else if (path === '/shopping') {
+        setCurrentCategory('Shopping');
+      } else if (path === '/business-tech') {
+        setCurrentCategory('Business & Tech');
+      } else if (path === '/') {
+        setCurrentCategory('All');
+      }
+    };
+
+    handleUrlRoute();
+    window.addEventListener('popstate', handleUrlRoute);
+    return () => window.removeEventListener('popstate', handleUrlRoute);
   }, []);
 
   const leadArticle = CURATED_ARTICLES[0]; // SpaceX & Ukraine
   const latestNewsLead = CURATED_ARTICLES.find(a => a.id === 'trump-workers-pay-cut') || CURATED_ARTICLES[1];
 
-  // Specific groups for exact HuffPost layout recreation
+  // Specific groups for signature HuffPost layout recreation
   const latestNewsItems = CURATED_ARTICLES.filter(a => 
     [
       'hegseth-army-event',
@@ -58,7 +82,7 @@ export default function App() {
       'el-sayed-brilliant-reply',
       'james-carville-newsmax',
       'trump-livestreamed-execution-second-thoughts',
-      'megyn Kelly-katie-zacharia',
+      'megyn-kelly-katie-zacharia',
       'scott-jennings-cnn-response',
       'jen-psaki-katie-zacharia'
     ].includes(a.id)
@@ -98,11 +122,10 @@ export default function App() {
 
   const handleCloseArticle = () => {
     setActiveArticle(null);
-    window.history.pushState({}, '', window.location.pathname);
+    window.history.pushState({}, '', window.location.pathname.startsWith('/news') ? '/' : window.location.pathname);
   };
 
   const handleSelectHeadline = (headline: string) => {
-    // Find closest article or set search
     const matched = NEWS_DATABASE.find(a => a.title.toLowerCase().includes(headline.substring(0, 20).toLowerCase()));
     if (matched) {
       handleOpenArticle(matched);
@@ -111,56 +134,39 @@ export default function App() {
     }
   };
 
+  const handleCategorySelect = (cat: Category) => {
+    setCurrentCategory(cat);
+    setSearchQuery('');
+    const slugMap: Record<string, string> = {
+      All: '/',
+      Politics: '/politics',
+      'Latest News': '/latest-news',
+      Life: '/life',
+      Shopping: '/shopping',
+      'Business & Tech': '/business-tech'
+    };
+    window.history.pushState({}, '', slugMap[cat] || '/');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-white text-gray-900 selection:bg-[#0E5B44] selection:text-white font-sans">
-      {/* 1. Header with exact forest green, logo, Support Us button */}
+      {/* 1. Header with exact forest green, logo, Support Us and Subscribe button */}
       <Header
         currentCategory={currentCategory}
-        onSelectCategory={(cat) => {
-          setCurrentCategory(cat);
-          setSearchQuery('');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
+        onSelectCategory={handleCategorySelect}
         onOpenSupport={() => setShowSupportModal(true)}
         onOpenSubscriberModal={() => setShowSubscriberModal(true)}
-        onOpenEmailInbox={() => setShowEmailInboxModal(true)}
-        dispatchedEmailsCount={dispatchedEmails.length}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         onOpenSubmitTip={() => setShowSubmitTipModal(true)}
-        onViewArchive={() => {
-          setShowArchiveSection(true);
-          const el = document.getElementById('archive-vault');
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }}
       />
 
       {/* 2. Live Updates Ticker */}
       <LiveTicker onSelectHeadline={handleSelectHeadline} />
 
-      {/* Floating Subscriber Instant Notification Badge */}
-      {dispatchedEmails.length > 0 && (
-        <div className="bg-[#083c2d] text-emerald-100 text-xs py-1.5 px-4 flex items-center justify-between border-b border-emerald-700">
-          <div className="max-w-7xl mx-auto w-full flex items-center justify-between">
-            <div className="flex items-center space-x-2 truncate">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping shrink-0" />
-              <span className="truncate">
-                <strong>Automated Dispatch Active:</strong> Welcome follow-up delivered to <code>{dispatchedEmails[0].to}</code> from <code>support@americanadigest.blog</code>
-              </span>
-            </div>
-            <button
-              onClick={() => setShowEmailInboxModal(true)}
-              className="text-white underline hover:text-emerald-200 font-bold ml-2 shrink-0 text-xs"
-            >
-              Inspect Delivered Email
-            </button>
-          </div>
-        </div>
-      )}
-
       {/* Main Content Area */}
       <main className="flex-1">
-        {/* If category is ALL and not searching, show full signature HuffPost Homepage layout */}
         {currentCategory === 'All' && !searchQuery ? (
           <>
             {/* A. Iconic 3-color Stacked Splash Headline */}
@@ -179,30 +185,32 @@ export default function App() {
                 <div className="h-0.5 bg-gray-900 flex-1" />
               </div>
 
-              {/* Big Featured Lead Story: Trump Workers Pay Cut */}
-              <div
-                onClick={() => handleOpenArticle(latestNewsLead)}
-                className="cursor-pointer group mb-8 pb-8 border-b border-gray-200"
-              >
-                <div className="aspect-16/10 sm:aspect-16/9 overflow-hidden rounded-xs bg-gray-100 mb-4">
-                  <img
-                    src={latestNewsLead.imageUrl}
-                    alt={latestNewsLead.title}
-                    className="w-full h-full object-cover group-hover:scale-101 transition-transform duration-300"
-                  />
+              {/* Big Featured Lead Story */}
+              {latestNewsLead && (
+                <div
+                  onClick={() => handleOpenArticle(latestNewsLead)}
+                  className="cursor-pointer group mb-8 pb-8 border-b border-gray-200"
+                >
+                  <div className="aspect-16/10 sm:aspect-16/9 overflow-hidden rounded-xs bg-gray-100 mb-4">
+                    <img
+                      src={latestNewsLead.imageUrl}
+                      alt={latestNewsLead.title}
+                      className="w-full h-full object-cover group-hover:scale-101 transition-transform duration-300"
+                    />
+                  </div>
+                  <h3 className="font-headline font-black text-2xl sm:text-4xl uppercase tracking-tight text-gray-900 group-hover:text-[#0E5B44] leading-tight">
+                    {latestNewsLead.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm sm:text-base mt-2 line-clamp-2">
+                    {latestNewsLead.summary}
+                  </p>
+                  <div className="mt-2 text-xs text-gray-400 font-semibold">
+                    By {latestNewsLead.author.name} • {latestNewsLead.timeAgo}
+                  </div>
                 </div>
-                <h3 className="font-headline font-black text-2xl sm:text-4xl uppercase tracking-tight text-gray-900 group-hover:text-[#0E5B44] leading-tight">
-                  {latestNewsLead.title}
-                </h3>
-                <p className="text-gray-600 text-sm sm:text-base mt-2 line-clamp-2">
-                  {latestNewsLead.summary}
-                </p>
-                <div className="mt-2 text-xs text-gray-400 font-semibold">
-                  By {latestNewsLead.author.name} • {latestNewsLead.timeAgo}
-                </div>
-              </div>
+              )}
 
-              {/* 2-Column Story Grid matching screenshot layout */}
+              {/* 2-Column Story Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-8">
                 {latestNewsItems.map((article) => (
                   <article
@@ -246,7 +254,7 @@ export default function App() {
               onOpenLogin={() => setShowSubscriberModal(true)}
             />
 
-            {/* D. 👇 WHAT'S HAPPENING 👇 Section */}
+            {/* D. WHAT'S HAPPENING Section */}
             <section className="max-w-4xl mx-auto px-3 sm:px-4 py-6 border-b border-gray-200">
               <div className="flex items-center space-x-2 mb-6">
                 <span className="text-xl">👇</span>
@@ -280,7 +288,7 @@ export default function App() {
               </div>
             </section>
 
-            {/* E. AMERICANA VIDEO (Video Player) */}
+            {/* E. AMERICANA VIDEO */}
             <AmericanaVideo />
 
             {/* F. LIFE Section */}
@@ -292,7 +300,6 @@ export default function App() {
                 <div className="h-0.5 bg-gray-900 flex-1" />
               </div>
 
-              {/* Lead Life Story */}
               {lifeItems.length > 0 && (
                 <div
                   onClick={() => handleOpenArticle(lifeItems[0])}
@@ -314,7 +321,6 @@ export default function App() {
                 </div>
               )}
 
-              {/* Secondary Life Stories */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 {lifeItems.slice(1).map((item) => (
                   <article
@@ -381,11 +387,6 @@ export default function App() {
                 ))}
               </div>
             </section>
-
-            {/* I. 3,000 Articles Vault Anchor */}
-            <div id="archive-vault">
-              <NewsArchive3000 onOpenArticle={handleOpenArticle} />
-            </div>
           </>
         ) : (
           /* Category Filtered or Search View */
@@ -399,14 +400,13 @@ export default function App() {
                   {searchQuery ? `"${searchQuery}"` : currentCategory}
                 </h1>
                 <p className="text-xs text-gray-500 mt-1">
-                  Showing {filteredQueryResults.totalCount} authoritative articles from the last 90 days.
+                  Showing {filteredQueryResults.totalCount} authoritative newsroom articles.
                 </p>
               </div>
 
               <button
                 onClick={() => {
-                  setCurrentCategory('All');
-                  setSearchQuery('');
+                  handleCategorySelect('All');
                 }}
                 className="text-xs text-gray-600 hover:text-black underline font-semibold"
               >
@@ -458,17 +458,12 @@ export default function App() {
         )}
       </main>
 
-      {/* Footer matching screenshot 10 */}
+      {/* Footer */}
       <Footer
-        onSelectCategory={(cat) => {
-          setCurrentCategory(cat);
-          setSearchQuery('');
-          window.scrollTo({ top: 0, behavior: 'smooth' });
-        }}
+        onSelectCategory={handleCategorySelect}
         onOpenSubscriberModal={() => setShowSubscriberModal(true)}
         onOpenSupport={() => setShowSupportModal(true)}
         onOpenSubmitTip={() => setShowSubmitTipModal(true)}
-        onOpenEmailInbox={() => setShowEmailInboxModal(true)}
       />
 
       {/* Modals */}
@@ -485,13 +480,9 @@ export default function App() {
         onClose={() => setShowSupportModal(false)}
       />
 
-      <EmailFollowupModal
-        isOpen={showSubscriberModal || showEmailInboxModal}
-        onClose={() => {
-          setShowSubscriberModal(false);
-          setShowEmailInboxModal(false);
-          setDispatchedEmails(getDispatchedEmails());
-        }}
+      <SubscribeModal
+        isOpen={showSubscriberModal}
+        onClose={() => setShowSubscriberModal(false)}
       />
 
       <SubmitTipModal

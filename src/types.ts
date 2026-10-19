@@ -3,11 +3,8 @@ export type Category =
   | 'Politics'
   | 'Latest News'
   | 'Life'
-  | 'Entertainment'
   | 'Shopping'
-  | 'Voices'
-  | 'Business & Tech'
-  | 'World';
+  | 'Business & Tech';
 
 export interface Backlink {
   text: string;
