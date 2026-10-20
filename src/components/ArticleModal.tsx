@@ -339,15 +339,15 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
             <div className="mb-6 py-2.5 px-3.5 sm:px-4 bg-gray-50 border border-gray-200 rounded-sm flex flex-wrap items-center justify-between gap-2.5 text-xs sm:text-sm font-bold text-gray-700">
               <div className="flex items-center space-x-1.5 text-gray-900">
                 <Eye className="w-4 h-4 text-[#0E5B44]" />
-                <span><strong className="text-black font-black">{article.viewsCount >= 40000000 ? '40,000,000+' : `${(article.viewsCount / 1000000).toFixed(1)}M+`}</strong> Views</span>
+                <span><strong className="text-black font-black font-mono">{article.viewsCount.toLocaleString()}</strong> Views</span>
               </div>
               <div className="flex items-center space-x-1.5 text-[#F02D5E]">
                 <Heart className="w-4 h-4 fill-current text-[#F02D5E]" />
-                <span><strong className="font-black">{(article.likesCount ? (article.likesCount + likesDelta).toLocaleString() : '2,000,000+')}</strong> Love</span>
+                <span><strong className="font-black font-mono">{((article.likesCount || 2148693) + likesDelta).toLocaleString()}</strong> Love</span>
               </div>
               <div className="flex items-center space-x-1.5 text-blue-700">
                 <MessageSquare className="w-4 h-4 text-blue-600" />
-                <span><strong className="font-black">{(article.commentsCount ? (article.commentsCount + comments.length - 2).toLocaleString() : '18,000+')}</strong> Comments</span>
+                <span><strong className="font-black font-mono">{((article.commentsCount || 2041892) + comments.length - 2).toLocaleString()}</strong> Comments</span>
               </div>
             </div>
           )}

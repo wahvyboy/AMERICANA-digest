@@ -74,3 +74,16 @@ export interface AutomatedEmail {
   bodyHtml: string;
   status: 'delivered' | 'sending';
 }
+
+export type PolicySlug = 
+  | 'about'
+  | 'editorial-standards'
+  | 'corrections'
+  | 'contact'
+  | 'user-agreement'
+  | 'privacy'
+  | 'comment-policy'
+  | 'accessibility'
+  | 'dmca'
+  | 'masthead';
+

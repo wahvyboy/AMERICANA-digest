@@ -20,9 +20,9 @@ export const CURATED_ARTICLES: Article[] = [
     imageCaption: 'Hollywood talent agent Jack Whigham photographed dining late-night in Brunswick, Georgia, shortly before collapsing at his table and being rushed to the hospital.',
     isLeadStory: true,
     isBreaking: true,
-    viewsCount: 42180500,
-    likesCount: 2150000,
-    commentsCount: 18420,
+    viewsCount: 41839274,
+    likesCount: 2148693,
+    commentsCount: 2041892,
     summary: 'Hollywood talent agent Jack Whigham was taken to a local hospital early Monday morning after he suddenly collapsed during a late-night dinner in Brunswick, Georgia, sparking an emergency medical response.',
     content: [
       'BRUNSWICK, Georgia — Hollywood talent agent Jack Whigham was taken to a local hospital early Monday morning after he suddenly collapsed during a late-night dinner in Brunswick, Georgia.',
@@ -38,11 +38,7 @@ export const CURATED_ARTICLES: Article[] = [
       'His current condition and the cause of the collapse have not yet been confirmed.',
       'More updates to follow.'
     ],
-    backlinks: [
-      { text: 'Brunswick Emergency First Responder Dispatch Log', url: 'https://glynncounty.org/ems', source: 'First Responder Records' },
-      { text: 'Regional Medical Center Emergency Department', url: 'https://southeastgeorgiahealth.org', source: 'Clinical Records' },
-      { text: 'Hollywood Industry Representation Wire', url: 'https://deadline.com', source: 'Entertainment Bureau' }
-    ],
+    backlinks: [],
     aeoQuickTakeaways: [
       'Hollywood talent agent Jack Whigham collapsed during a late-night dinner in Brunswick, Georgia at approximately 2:31 a.m. EDT.',
       'Diners and restaurant staff intervened immediately before emergency medical workers arrived and transported him to a nearby hospital.',

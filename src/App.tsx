@@ -10,7 +10,8 @@ import { SubscribeModal } from './components/SubscribeModal';
 import { SupportModal } from './components/SupportModal';
 import { MobileBottomNav } from './components/MobileBottomNav';
 import { Footer } from './components/Footer';
-import { Article, Category } from './types';
+import { PolicyModal } from './components/PolicyModal';
+import { Article, Category, PolicySlug } from './types';
 import { CURATED_ARTICLES } from './data/curatedArticles';
 import { NEWS_DATABASE, queryNewsArchive } from './data/databaseEngine';
 import { Eye, ArrowRight } from 'lucide-react';
@@ -22,6 +23,7 @@ export default function App() {
   const [showSupportModal, setShowSupportModal] = useState(false);
   const [showSubscriberModal, setShowSubscriberModal] = useState(false);
   const [showSubmitTipModal, setShowSubmitTipModal] = useState(false);
+  const [policyModalTab, setPolicyModalTab] = useState<PolicySlug | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [showSearchInput, setShowSearchInput] = useState(false);
 
@@ -38,6 +40,23 @@ export default function App() {
           setActiveArticle(found);
           return;
         }
+      }
+
+      // Check policy routes
+      const policySlugs: PolicySlug[] = [
+        'about', 'editorial-standards', 'corrections', 'contact',
+        'user-agreement', 'privacy', 'comment-policy', 'accessibility',
+        'dmca', 'masthead'
+      ];
+      const normalizedPath = path.replace(/^\//, '').replace(/\/$/, '') as PolicySlug;
+      if (policySlugs.includes(normalizedPath)) {
+        setPolicyModalTab(normalizedPath);
+        return;
+      }
+      const policyParam = params.get('policy') as PolicySlug | null;
+      if (policyParam && policySlugs.includes(policyParam)) {
+        setPolicyModalTab(policyParam);
+        return;
       }
 
       // Check path-based route (e.g. /news/slug or /category)
@@ -126,6 +145,16 @@ export default function App() {
   const handleCloseArticle = () => {
     setActiveArticle(null);
     window.history.pushState({}, '', window.location.pathname.startsWith('/news') ? '/' : window.location.pathname);
+  };
+
+  const handleOpenPolicy = (slug: PolicySlug) => {
+    setPolicyModalTab(slug);
+    window.history.pushState({}, '', `/${slug}`);
+  };
+
+  const handleClosePolicy = () => {
+    setPolicyModalTab(null);
+    window.history.pushState({}, '', '/');
   };
 
   const handleSelectHeadline = (headline: string) => {
@@ -504,6 +533,7 @@ export default function App() {
         onOpenSubscriberModal={() => setShowSubscriberModal(true)}
         onOpenSupport={() => setShowSupportModal(true)}
         onOpenSubmitTip={() => setShowSubmitTipModal(true)}
+        onOpenPolicy={handleOpenPolicy}
       />
 
       {/* Mobile Sticky Bottom Quick-Action Bar */}
@@ -526,6 +556,16 @@ export default function App() {
         onOpenArticle={handleOpenArticle}
         relatedArticles={CURATED_ARTICLES.filter(a => a.id !== activeArticle?.id)}
         onOpenSubscriberModal={() => setShowSubscriberModal(true)}
+      />
+
+      <PolicyModal
+        initialTab={policyModalTab}
+        isOpen={!!policyModalTab}
+        onClose={handleClosePolicy}
+        onSelectTab={(tab) => {
+          setPolicyModalTab(tab);
+          window.history.pushState({}, '', `/${tab}`);
+        }}
       />
 
       <SupportModal
