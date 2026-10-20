@@ -25,7 +25,7 @@ export const Footer: React.FC<FooterProps> = ({
   };
 
   return (
-    <footer className="bg-[#0E5B44] text-white pt-10 sm:pt-12 pb-12 sm:pb-8 border-t-4 border-[#083c2d] overflow-x-clip max-w-full">
+    <footer className="bg-[#0E5B44] text-white pt-10 sm:pt-12 pb-28 sm:pb-12 border-t-4 border-[#083c2d] overflow-x-clip max-w-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         {/* Top Footer: Brand with Official AD Emblem + Newsletter Capture */}
         <div className="flex flex-col md:flex-row md:items-center justify-between pb-8 border-b border-emerald-800/80 gap-6">
@@ -294,13 +294,16 @@ export const Footer: React.FC<FooterProps> = ({
         </div>
 
         {/* Bottom Copyright and Email with Zero Overflow */}
-        <div className="pt-6 border-t border-emerald-800/80 text-center text-xs text-emerald-300/80 space-y-1.5 font-sans break-words max-w-full">
+        <div className="pt-6 border-t border-emerald-800/80 text-center text-xs text-emerald-300/80 space-y-2 font-sans break-words max-w-full">
           <p className="leading-relaxed">
             Part of Americana Digest News. ©2026 Americana Digest Media, Inc. All rights reserved.
           </p>
           <p className="font-semibold text-emerald-200 leading-relaxed">
-            Americana Digest Bureau • Direct Inquiries:{' '}
-            <a href="mailto:support@americanadigest.blog" className="underline hover:text-white break-all">
+            Americana Digest Bureau • Direct Inquiries:
+            <a 
+              href="mailto:support@americanadigest.blog" 
+              className="underline hover:text-white block sm:inline-block sm:ml-1 break-all text-emerald-100"
+            >
               support@americanadigest.blog
             </a>
           </p>
