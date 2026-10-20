@@ -8,6 +8,7 @@ import { SubmitTipBanner, SubmitTipModal } from './components/SubmitTipBanner';
 import { ArticleModal } from './components/ArticleModal';
 import { SubscribeModal } from './components/SubscribeModal';
 import { SupportModal } from './components/SupportModal';
+import { MobileBottomNav } from './components/MobileBottomNav';
 import { Footer } from './components/Footer';
 import { Article, Category } from './types';
 import { CURATED_ARTICLES } from './data/curatedArticles';
@@ -21,6 +22,8 @@ export default function App() {
   const [showSupportModal, setShowSupportModal] = useState(false);
   const [showSubscriberModal, setShowSubscriberModal] = useState(false);
   const [showSubmitTipModal, setShowSubmitTipModal] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [showSearchInput, setShowSearchInput] = useState(false);
 
   useEffect(() => {
     // Check if URL has path or query ?article=ID
@@ -150,7 +153,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-white text-gray-900 selection:bg-[#0E5B44] selection:text-white font-sans">
+    <div className="min-h-screen flex flex-col bg-white text-gray-900 selection:bg-[#0E5B44] selection:text-white font-sans overflow-x-clip max-w-full">
       {/* 1. Header with exact forest green, logo, Support Us and Subscribe button */}
       <Header
         currentCategory={currentCategory}
@@ -160,13 +163,17 @@ export default function App() {
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
         onOpenSubmitTip={() => setShowSubmitTipModal(true)}
+        drawerOpen={drawerOpen}
+        onToggleDrawer={setDrawerOpen}
+        showSearchInput={showSearchInput}
+        onToggleSearchInput={setShowSearchInput}
       />
 
       {/* 2. Live Updates Ticker */}
       <LiveTicker onSelectHeadline={handleSelectHeadline} />
 
-      {/* Main Content Area */}
-      <main className="flex-1">
+      {/* Main Content Area with padding-bottom clearance for mobile bottom bar */}
+      <main className="flex-1 pb-20 md:pb-0">
         {currentCategory === 'All' && !searchQuery ? (
           <>
             {/* A. Iconic 3-color Stacked Splash Headline */}
@@ -179,7 +186,7 @@ export default function App() {
             {/* B. LATEST NEWS Section */}
             <section className="max-w-4xl mx-auto px-3 sm:px-4 py-6 border-b border-gray-200">
               <div className="flex items-center space-x-3 mb-6">
-                <h2 className="font-headline font-black text-2xl sm:text-3xl uppercase tracking-tight text-gray-900 whitespace-nowrap">
+                <h2 className="font-headline font-black section-title-fluid uppercase tracking-tight text-gray-900 whitespace-nowrap">
                   LATEST NEWS
                 </h2>
                 <div className="h-0.5 bg-gray-900 flex-1" />
@@ -195,13 +202,17 @@ export default function App() {
                     <img
                       src={latestNewsLead.imageUrl}
                       alt={latestNewsLead.title}
+                      width={800}
+                      height={450}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover group-hover:scale-101 transition-transform duration-300"
                     />
                   </div>
                   <h3 className="font-headline font-black text-2xl sm:text-4xl uppercase tracking-tight text-gray-900 group-hover:text-[#0E5B44] leading-tight">
                     {latestNewsLead.title}
                   </h3>
-                  <p className="text-gray-600 text-sm sm:text-base mt-2 line-clamp-2">
+                  <p className="text-gray-600 text-sm sm:text-base mt-2 line-clamp-2 leading-relaxed">
                     {latestNewsLead.summary}
                   </p>
                   <div className="mt-2 text-xs text-gray-400 font-semibold">
@@ -210,7 +221,7 @@ export default function App() {
                 </div>
               )}
 
-              {/* 2-Column Story Grid */}
+              {/* 2-Column Story Grid with fluid typography */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-8">
                 {latestNewsItems.map((article) => (
                   <article
@@ -223,7 +234,10 @@ export default function App() {
                         <img
                           src={article.imageUrl}
                           alt={article.title}
+                          width={600}
+                          height={375}
                           loading="lazy"
+                          decoding="async"
                           className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
                         />
                       </div>
@@ -239,7 +253,7 @@ export default function App() {
                     <div className="mt-3 flex items-center justify-between text-xs text-gray-400">
                       <span>{article.timeAgo}</span>
                       <span className="flex items-center space-x-1">
-                        <Eye className="w-3 h-3" />
+                        <Eye className="w-3.5 h-3.5" />
                         <span>{(article.viewsCount / 1000).toFixed(0)}k</span>
                       </span>
                     </div>
@@ -272,11 +286,17 @@ export default function App() {
                     onClick={() => handleOpenArticle(item)}
                     className="cursor-pointer group flex space-x-3 items-start border-b border-gray-100 pb-4"
                   >
-                    <img
-                      src={item.imageUrl}
-                      alt={item.title}
-                      className="w-28 h-20 object-cover rounded-xs shrink-0 bg-gray-100 group-hover:opacity-90"
-                    />
+                    <div className="w-28 h-20 shrink-0 aspect-[7/5] overflow-hidden rounded-xs bg-gray-100">
+                      <img
+                        src={item.imageUrl}
+                        alt={item.title}
+                        width={112}
+                        height={80}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover group-hover:opacity-90"
+                      />
+                    </div>
                     <div className="flex-1">
                       <h4 className="font-headline font-black text-base uppercase tracking-tight text-gray-900 group-hover:text-[#0E5B44] leading-snug line-clamp-3">
                         {item.title}
@@ -294,7 +314,7 @@ export default function App() {
             {/* F. LIFE Section */}
             <section className="max-w-4xl mx-auto px-3 sm:px-4 py-6 border-b border-gray-200">
               <div className="flex items-center space-x-3 mb-6">
-                <h2 className="font-headline font-black text-2xl sm:text-3xl uppercase tracking-tight text-gray-900 whitespace-nowrap">
+                <h2 className="font-headline font-black section-title-fluid uppercase tracking-tight text-gray-900 whitespace-nowrap">
                   LIFE
                 </h2>
                 <div className="h-0.5 bg-gray-900 flex-1" />
@@ -309,13 +329,17 @@ export default function App() {
                     <img
                       src={lifeItems[0].imageUrl}
                       alt={lifeItems[0].title}
+                      width={800}
+                      height={450}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover group-hover:scale-101 transition-transform duration-300"
                     />
                   </div>
                   <h3 className="font-headline font-black text-2xl sm:text-3xl uppercase tracking-tight text-gray-900 group-hover:text-[#0E5B44] leading-tight">
                     {lifeItems[0].title}
                   </h3>
-                  <p className="text-gray-600 text-sm sm:text-base mt-2 line-clamp-2">
+                  <p className="text-gray-600 text-sm sm:text-base mt-2 line-clamp-2 leading-relaxed">
                     {lifeItems[0].summary}
                   </p>
                 </div>
@@ -328,11 +352,17 @@ export default function App() {
                     onClick={() => handleOpenArticle(item)}
                     className="cursor-pointer group flex space-x-3 items-start"
                   >
-                    <img
-                      src={item.imageUrl}
-                      alt={item.title}
-                      className="w-28 h-20 object-cover rounded-xs shrink-0 bg-gray-100 group-hover:opacity-90"
-                    />
+                    <div className="w-28 h-20 shrink-0 aspect-[7/5] overflow-hidden rounded-xs bg-gray-100">
+                      <img
+                        src={item.imageUrl}
+                        alt={item.title}
+                        width={112}
+                        height={80}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover group-hover:opacity-90"
+                      />
+                    </div>
                     <div className="flex-1">
                       <h4 className="font-headline font-black text-base uppercase tracking-tight text-gray-900 group-hover:text-[#0E5B44] leading-snug line-clamp-3">
                         {item.title}
@@ -350,7 +380,7 @@ export default function App() {
             {/* H. SHOPPING Section */}
             <section className="max-w-4xl mx-auto px-3 sm:px-4 py-6 border-b border-gray-200">
               <div className="flex items-center space-x-3 mb-6">
-                <h2 className="font-headline font-black text-2xl sm:text-3xl uppercase tracking-tight text-gray-900 whitespace-nowrap">
+                <h2 className="font-headline font-black section-title-fluid uppercase tracking-tight text-gray-900 whitespace-nowrap">
                   SHOPPING
                 </h2>
                 <div className="h-0.5 bg-gray-900 flex-1" />
@@ -363,11 +393,17 @@ export default function App() {
                     onClick={() => handleOpenArticle(item)}
                     className="cursor-pointer group flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 items-start border-b border-gray-100 pb-6"
                   >
-                    <img
-                      src={item.imageUrl}
-                      alt={item.title}
-                      className="w-full sm:w-44 h-36 object-cover rounded-xs shrink-0 bg-gray-100 group-hover:opacity-90"
-                    />
+                    <div className="w-full sm:w-44 h-36 shrink-0 aspect-[11/9] overflow-hidden rounded-xs bg-gray-100">
+                      <img
+                        src={item.imageUrl}
+                        alt={item.title}
+                        width={176}
+                        height={144}
+                        loading="lazy"
+                        decoding="async"
+                        className="w-full h-full object-cover group-hover:opacity-90"
+                      />
+                    </div>
                     <div className="flex-1">
                       <span className="text-[10px] font-black uppercase text-[#0E5B44] tracking-wider mb-1 block">
                         {item.headlinePrefix || 'DEAL REVIEW'}
@@ -389,7 +425,7 @@ export default function App() {
             </section>
           </>
         ) : (
-          /* Category Filtered or Search View */
+          /* Category Filtered or Search View with max-w-7xl boundary */
           <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
             <div className="flex items-center justify-between pb-4 border-b border-gray-300 mb-6">
               <div>
@@ -408,7 +444,7 @@ export default function App() {
                 onClick={() => {
                   handleCategorySelect('All');
                 }}
-                className="text-xs text-gray-600 hover:text-black underline font-semibold"
+                className="text-xs text-gray-600 hover:text-black underline font-semibold touch-target-44"
               >
                 ← Back to Frontpage
               </button>
@@ -426,6 +462,10 @@ export default function App() {
                       <img
                         src={art.imageUrl}
                         alt={art.title}
+                        width={600}
+                        height={375}
+                        loading="lazy"
+                        decoding="async"
                         className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
                       />
                     </div>
@@ -438,7 +478,7 @@ export default function App() {
                       <h3 className="font-headline font-black text-lg uppercase tracking-tight text-gray-900 group-hover:text-[#0E5B44] leading-snug line-clamp-2">
                         {art.title}
                       </h3>
-                      <p className="text-gray-600 text-xs mt-2 line-clamp-2">
+                      <p className="text-gray-600 text-xs mt-2 line-clamp-2 leading-relaxed">
                         {art.summary}
                       </p>
                     </div>
@@ -447,7 +487,7 @@ export default function App() {
                   <div className="p-4 pt-0 flex items-center justify-between text-xs text-gray-400">
                     <span>{art.timeAgo}</span>
                     <span className="flex items-center space-x-1">
-                      <Eye className="w-3 h-3" />
+                      <Eye className="w-3.5 h-3.5" />
                       <span>{(art.viewsCount / 1000).toFixed(0)}k</span>
                     </span>
                   </div>
@@ -464,6 +504,19 @@ export default function App() {
         onOpenSubscriberModal={() => setShowSubscriberModal(true)}
         onOpenSupport={() => setShowSupportModal(true)}
         onOpenSubmitTip={() => setShowSubmitTipModal(true)}
+      />
+
+      {/* Mobile Sticky Bottom Quick-Action Bar */}
+      <MobileBottomNav
+        currentCategory={currentCategory}
+        onSelectCategory={handleCategorySelect}
+        onOpenDrawer={() => setDrawerOpen(true)}
+        onToggleSearch={() => {
+          setShowSearchInput(true);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }}
+        onOpenSubscribe={() => setShowSubscriberModal(true)}
+        onOpenTip={() => setShowSubmitTipModal(true)}
       />
 
       {/* Modals */}

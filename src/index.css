@@ -14,23 +14,25 @@
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
     scroll-behavior: smooth;
-    overflow-x: hidden;
+    overflow-x: clip;
+    max-width: 100%;
   }
 
   body {
-    overflow-x: hidden;
-    padding-top: env(safe-area-inset-top, 0px);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
+    overflow-x: clip;
+    max-width: 100%;
     padding-left: env(safe-area-inset-left, 0px);
     padding-right: env(safe-area-inset-right, 0px);
+    -webkit-tap-highlight-color: transparent;
   }
 
-  /* Prevent automatic mobile safari zoom on form inputs */
+  /* Prevent automatic mobile safari zoom on form inputs by enforcing 16px base */
   input, select, textarea {
     font-size: 16px !important;
   }
 }
 
+/* Typography Families */
 .font-condensed {
   font-family: 'Barlow Condensed', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
@@ -50,14 +52,14 @@
   font-family: 'Merriweather', Georgia, Cambria, serif;
 }
 
-/* Fluid responsive typography utilities */
+/* Fluid responsive typography utilities with CSS clamp() */
 .splash-title-fluid {
-  font-size: clamp(2rem, 7vw + 0.5rem, 4.5rem);
+  font-size: clamp(2rem, 6.5vw + 0.5rem, 4.5rem);
   line-height: 0.95;
 }
 
 .section-title-fluid {
-  font-size: clamp(1.4rem, 4vw + 0.2rem, 2.25rem);
+  font-size: clamp(1.5rem, 3.5vw + 0.5rem, 2.5rem);
   line-height: 1.1;
 }
 
@@ -67,11 +69,91 @@
 }
 
 .story-headline-card {
-  font-size: clamp(1.05rem, 2.2vw + 0.2rem, 1.25rem);
+  font-size: clamp(1.05rem, 2vw + 0.2rem, 1.35rem);
   line-height: 1.2;
 }
 
-/* Custom scrollbars and styling */
+.body-text-fluid {
+  font-size: clamp(1rem, 1.2vw + 0.5rem, 1.15rem);
+  line-height: 1.75;
+}
+
+/* Mobile Touch Ergonomic Utilities */
+.touch-target {
+  min-width: 48px;
+  min-height: 48px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.touch-target-44 {
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Safe Area Insets for iPhone Notch & Dynamic Island */
+.pt-safe {
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+.pb-safe {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.pl-safe {
+  padding-left: env(safe-area-inset-left, 0px);
+}
+
+.pr-safe {
+  padding-right: env(safe-area-inset-right, 0px);
+}
+
+/* Video Touch Scrubber with enlarged touch hit area & touch-action: none */
+.touch-scrubber {
+  touch-action: none;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 9999px;
+  cursor: pointer;
+}
+
+.touch-scrubber::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #F02D5E;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+  transition: transform 0.15s ease;
+}
+
+.touch-scrubber:active::-webkit-slider-thumb {
+  transform: scale(1.35);
+}
+
+.touch-scrubber::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #F02D5E;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.4);
+  border: none;
+  transition: transform 0.15s ease;
+}
+
+.touch-scrubber:active::-moz-range-thumb {
+  transform: scale(1.35);
+}
+
+/* Custom scrollbars */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -85,4 +167,23 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+/* Subtle animation keyframes */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.98); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(100%); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }

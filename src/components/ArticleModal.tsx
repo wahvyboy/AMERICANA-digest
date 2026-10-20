@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   X, Share2, Bookmark, Volume2, VolumeX, Eye, Clock, Check, 
-  ExternalLink, MessageSquare, Sparkles, HelpCircle, ThumbsUp, Send, Link as LinkIcon 
+  ExternalLink, MessageSquare, Sparkles, HelpCircle, ThumbsUp, Send, Link as LinkIcon,
+  Type, ArrowLeft
 } from 'lucide-react';
 import { Article } from '../types';
 
@@ -13,6 +14,8 @@ interface ArticleModalProps {
   onOpenSubscriberModal: () => void;
 }
 
+type FontSizeOption = 'normal' | 'large' | 'xlarge';
+
 export const ArticleModal: React.FC<ArticleModalProps> = ({
   article,
   onClose,
@@ -20,11 +23,22 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
   relatedArticles,
   onOpenSubscriberModal
 }) => {
-  const [fontSize, setFontSize] = useState<'normal' | 'large' | 'xlarge'>('normal');
+  // Persistent font size preference
+  const [fontSize, setFontSize] = useState<FontSizeOption>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('americana_font_size');
+      if (saved === 'normal' || saved === 'large' || saved === 'xlarge') {
+        return saved;
+      }
+    }
+    return 'normal';
+  });
+
   const [isPlayingAudio, setIsPlayingAudio] = useState(false);
   const [copiedLink, setCopiedLink] = useState(false);
   const [bookmarked, setBookmarked] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [shareSuccessMessage, setShareSuccessMessage] = useState('');
   const [comments, setComments] = useState<Array<{ name: string; text: string; time: string; likes: number }>>([
     { name: 'Dr. Arthur Sterling', text: 'The institutional implications highlighted in this reporting are spot on. Relying on commercial waivers poses clear constitutional questions.', time: '45m ago', likes: 14 },
     { name: 'Sarah Lin, JD', text: 'Extremely well-sourced piece. The references to the FLSA Section 13(a) docket are crucial context that cable broadcasts completely omit.', time: '2h ago', likes: 29 }
@@ -32,10 +46,16 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
   const [newComment, setNewComment] = useState('');
   const [commenterName, setCommenterName] = useState('');
 
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+
   // Lock body scroll when article is open
   useEffect(() => {
     if (article) {
       document.body.style.overflow = 'hidden';
+      // Reset scroll position on new article
+      if (scrollContainerRef.current) {
+        scrollContainerRef.current.scrollTop = 0;
+      }
     } else {
       document.body.style.overflow = '';
     }
@@ -44,12 +64,51 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
     };
   }, [article]);
 
+  // Save font size changes to localStorage
+  const handleSetFontSize = (size: FontSizeOption) => {
+    setFontSize(size);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('americana_font_size', size);
+    }
+  };
+
+  const cycleFontSize = () => {
+    if (fontSize === 'normal') handleSetFontSize('large');
+    else if (fontSize === 'large') handleSetFontSize('xlarge');
+    else handleSetFontSize('normal');
+  };
+
   if (!article) return null;
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(window.location.origin + '?article=' + article.id);
-    setCopiedLink(true);
-    setTimeout(() => setCopiedLink(false), 2000);
+  const handleShare = async () => {
+    const shareUrl = window.location.origin + '?article=' + article.id;
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: article.title,
+          text: article.subtitle || article.summary,
+          url: shareUrl,
+        });
+        setShareSuccessMessage('Shared!');
+        setTimeout(() => setShareSuccessMessage(''), 2000);
+        return;
+      } catch (err) {
+        // User cancelled or share failed, fallback to clipboard
+      }
+    }
+
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      setCopiedLink(true);
+      setShareSuccessMessage('Link copied to clipboard!');
+      setTimeout(() => {
+        setCopiedLink(false);
+        setShareSuccessMessage('');
+      }, 2500);
+    } catch {
+      setShareSuccessMessage('Link copied!');
+      setTimeout(() => setShareSuccessMessage(''), 2000);
+    }
   };
 
   const handleAddComment = (e: React.FormEvent) => {
@@ -67,15 +126,17 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
     setNewComment('');
   };
 
-  const fontClasses = {
-    normal: 'text-base sm:text-lg leading-relaxed',
-    large: 'text-lg sm:text-xl leading-relaxed',
-    xlarge: 'text-xl sm:text-2xl leading-relaxed'
+  const fontClasses: Record<FontSizeOption, string> = {
+    normal: 'text-base sm:text-lg leading-[1.8]',
+    large: 'text-lg sm:text-xl leading-[1.85]',
+    xlarge: 'text-xl sm:text-2xl leading-[1.9]'
   };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-xs p-0 sm:p-4">
+      {/* Container: Fullscreen on mobile (<640px), rounded elevated modal on desktop */}
       <div 
+        ref={scrollContainerRef}
         onScroll={(e) => {
           const el = e.currentTarget;
           const total = el.scrollHeight - el.clientHeight;
@@ -83,15 +144,23 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
         }}
         className="bg-white w-full h-full sm:h-[94vh] sm:max-w-4xl sm:rounded-md shadow-2xl flex flex-col overflow-y-auto relative animate-fadeIn"
       >
-        {/* Reading Progress Bar */}
+        {/* Reading Progress Bar (Fixed across screen) */}
         <div 
           className="fixed sm:absolute top-0 left-0 h-1 bg-[#F02D5E] z-40 transition-all duration-150"
           style={{ width: `${scrollProgress}%` }}
         />
 
-        {/* Top Sticky Tool Bar with 44px min touch targets */}
-        <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-gray-200 px-3 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between">
+        {/* Top Sticky Tool Bar with 48px touch targets */}
+        <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-gray-200 px-3 sm:px-5 py-2 sm:py-2.5 flex items-center justify-between pt-safe">
           <div className="flex items-center space-x-2">
+            {/* Mobile Back / Close Button */}
+            <button
+              onClick={onClose}
+              className="sm:hidden touch-target-44 p-2 -ml-1 text-gray-700 hover:text-black"
+              aria-label="Back to frontpage"
+            >
+              <ArrowLeft className="w-5 h-5" />
+            </button>
             <span className="text-xs font-black uppercase tracking-wider text-[#0E5B44]">
               {article.category}
             </span>
@@ -100,78 +169,98 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
           </div>
 
           <div className="flex items-center space-x-1 sm:space-x-2">
-            {/* Font Resizer */}
+            {/* Font Resizer Buttons */}
             <div className="flex items-center border border-gray-200 rounded-sm overflow-hidden text-xs">
               <button
-                onClick={() => setFontSize('normal')}
-                className={`px-2.5 py-1.5 font-bold min-h-[36px] ${fontSize === 'normal' ? 'bg-[#0E5B44] text-white' : 'text-gray-600 hover:bg-gray-100'}`}
-                title="Normal text"
+                onClick={() => handleSetFontSize('normal')}
+                className={`touch-target-44 px-2.5 py-1.5 font-bold ${fontSize === 'normal' ? 'bg-[#0E5B44] text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                title="Default text size"
+                aria-label="Default font size"
               >
                 A
               </button>
               <button
-                onClick={() => setFontSize('large')}
-                className={`px-2.5 py-1.5 font-bold min-h-[36px] ${fontSize === 'large' ? 'bg-[#0E5B44] text-white' : 'text-gray-600 hover:bg-gray-100'}`}
-                title="Large text"
+                onClick={() => handleSetFontSize('large')}
+                className={`touch-target-44 px-2.5 py-1.5 font-bold ${fontSize === 'large' ? 'bg-[#0E5B44] text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                title="Large text size"
+                aria-label="Large font size"
               >
                 A+
               </button>
+              <button
+                onClick={() => handleSetFontSize('xlarge')}
+                className={`hidden sm:inline-flex touch-target-44 px-2.5 py-1.5 font-bold ${fontSize === 'xlarge' ? 'bg-[#0E5B44] text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                title="Extra large text size"
+                aria-label="Extra large font size"
+              >
+                A++
+              </button>
             </div>
 
-            {/* Audio Voice Player */}
+            {/* Audio Voice Player Toggle */}
             <button
               onClick={() => setIsPlayingAudio(!isPlayingAudio)}
-              className={`p-2 rounded-full transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center ${
+              className={`touch-target-44 p-2 rounded-full transition-colors ${
                 isPlayingAudio ? 'bg-[#0E5B44] text-white' : 'hover:bg-gray-100 text-gray-600'
               }`}
-              title={isPlayingAudio ? 'Mute AI read' : 'Listen to story'}
+              title={isPlayingAudio ? 'Pause AI audio' : 'Listen to story'}
+              aria-label={isPlayingAudio ? 'Pause audio briefing' : 'Listen to audio briefing'}
             >
-              {isPlayingAudio ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+              {isPlayingAudio ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
             </button>
 
-            {/* Bookmark */}
+            {/* Bookmark Button */}
             <button
               onClick={() => setBookmarked(!bookmarked)}
-              className="p-2 rounded-full hover:bg-gray-100 text-gray-600 transition-colors min-w-[38px] min-h-[38px] flex items-center justify-center"
+              className="touch-target-44 p-2 rounded-full hover:bg-gray-100 text-gray-600 transition-colors"
               title="Save story"
+              aria-label="Bookmark article"
             >
-              <Bookmark className={`w-4 h-4 ${bookmarked ? 'fill-current text-[#F02D5E]' : ''}`} />
+              <Bookmark className={`w-5 h-5 ${bookmarked ? 'fill-current text-[#F02D5E]' : ''}`} />
             </button>
 
-            {/* Share */}
+            {/* Share Button */}
             <button
-              onClick={handleCopyLink}
-              className="p-2 rounded-full hover:bg-gray-100 text-gray-600 transition-colors relative min-w-[38px] min-h-[38px] flex items-center justify-center"
-              title="Copy share link"
+              onClick={handleShare}
+              className="touch-target-44 p-2 rounded-full hover:bg-gray-100 text-gray-600 transition-colors relative"
+              title="Share story"
+              aria-label="Share article"
             >
-              {copiedLink ? <Check className="w-4 h-4 text-emerald-600" /> : <Share2 className="w-4 h-4" />}
+              {copiedLink ? <Check className="w-5 h-5 text-emerald-600" /> : <Share2 className="w-5 h-5" />}
             </button>
 
-            {/* Close */}
+            {/* Desktop Close Button */}
             <button
               onClick={onClose}
-              className="p-2 rounded-full hover:bg-gray-200 text-gray-700 transition-colors ml-1 min-w-[44px] min-h-[44px] flex items-center justify-center"
-              aria-label="Close article"
+              className="hidden sm:inline-flex touch-target-44 p-2 rounded-full hover:bg-gray-200 text-gray-700 transition-colors ml-1"
+              aria-label="Close article modal"
             >
               <X className="w-5 h-5" />
             </button>
           </div>
         </div>
 
+        {/* Share toast feedback notification */}
+        {shareSuccessMessage && (
+          <div className="bg-[#0E5B44] text-white text-xs font-bold text-center py-1.5 px-4 animate-fadeIn">
+            ✓ {shareSuccessMessage}
+          </div>
+        )}
+
         {/* Audio Player Simulated Bar */}
         {isPlayingAudio && (
-          <div className="bg-[#0E5B44] text-white px-3 sm:px-4 py-2 sm:py-2.5 flex items-center justify-between text-xs">
+          <div className="bg-[#0E5B44] text-white px-3 sm:px-5 py-2.5 flex items-center justify-between text-xs">
             <div className="flex items-center space-x-2">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
-              <span><strong>Americana Audio:</strong> AI voice synthesized briefing running at 1.0x</span>
+              <span className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping" />
+              <span><strong>Americana Audio Brief:</strong> AI synthesized newsroom voice</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <div className="w-20 sm:w-24 bg-white/20 h-1.5 rounded-full overflow-hidden">
+            <div className="flex items-center space-x-3">
+              <div className="w-24 bg-white/20 h-1.5 rounded-full overflow-hidden">
                 <div className="bg-emerald-300 h-full w-2/3 animate-pulse" />
               </div>
               <button 
                 onClick={() => setIsPlayingAudio(false)} 
-                className="text-[11px] underline text-emerald-200 hover:text-white"
+                className="text-xs underline text-emerald-200 hover:text-white font-bold p-1 touch-target-44"
               >
                 Stop
               </button>
@@ -180,7 +269,7 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
         )}
 
         {/* Article Body Content */}
-        <article className="p-3.5 sm:p-8 max-w-3xl mx-auto w-full">
+        <article className="p-4 sm:p-8 max-w-3xl mx-auto w-full pb-28 sm:pb-12">
           {/* Prefix badge */}
           {article.headlinePrefix && (
             <div className="font-headline font-black text-xs sm:text-sm uppercase tracking-wider text-[#E0292B] mb-2">
@@ -189,7 +278,7 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
           )}
 
           {/* Main Headline */}
-          <h1 className="font-headline font-black text-2xl sm:text-4xl md:text-5xl uppercase tracking-tight text-gray-900 leading-[1.05] mb-3">
+          <h1 className="font-headline font-black text-2xl sm:text-4xl md:text-5xl uppercase tracking-tight text-gray-900 leading-[1.08] mb-3">
             {article.title}
           </h1>
 
@@ -201,12 +290,14 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
           )}
 
           {/* Author Byline & Timestamps */}
-          <div className="flex items-center justify-between py-3 border-y border-gray-200 mb-5 text-xs text-gray-600">
+          <div className="flex items-center justify-between py-3 border-y border-gray-200 mb-6 text-xs text-gray-600">
             <div className="flex items-center space-x-2.5 sm:space-x-3">
               <img
                 src={article.author.avatar}
                 alt={article.author.name}
-                className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover border border-gray-200"
+                width={40}
+                height={40}
+                className="w-10 h-10 rounded-full object-cover border border-gray-200 shrink-0"
               />
               <div>
                 <div className="font-bold text-gray-900 text-xs sm:text-sm">{article.author.name}</div>
@@ -226,28 +317,31 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
             </div>
           </div>
 
-          {/* Hero Image */}
-          <div className="mb-6 rounded-xs overflow-hidden shadow-xs border border-gray-100">
+          {/* Hero Image with Explicit Aspect Ratio to eliminate CLS */}
+          <div className="mb-6 rounded-xs overflow-hidden shadow-xs border border-gray-100 aspect-16/10 sm:aspect-16/9 bg-gray-100">
             <img
               src={article.imageUrl}
               alt={article.title}
-              className="w-full max-h-[460px] object-cover"
+              width={800}
+              height={450}
+              decoding="async"
+              className="w-full h-full object-cover"
             />
-            {article.imageCaption && (
-              <p className="p-2 sm:p-2.5 bg-gray-50 text-[11px] text-gray-500 italic border-t border-gray-200">
-                {article.imageCaption}
-              </p>
-            )}
           </div>
+          {article.imageCaption && (
+            <p className="p-2 sm:p-2.5 bg-gray-50 text-[11px] text-gray-500 italic border border-t-0 border-gray-200 rounded-b-xs -mt-6 mb-6">
+              {article.imageCaption}
+            </p>
+          )}
 
           {/* AEO Quick Takeaways Box */}
           {article.aeoQuickTakeaways && article.aeoQuickTakeaways.length > 0 && (
-            <div className="bg-emerald-50/60 border-l-4 border-[#0E5B44] p-3.5 sm:p-4 my-5 sm:my-6 rounded-r">
+            <div className="bg-emerald-50/70 border-l-4 border-[#0E5B44] p-4 my-6 rounded-r">
               <div className="flex items-center space-x-2 text-[#0E5B44] font-black uppercase text-xs tracking-wider mb-2">
                 <Sparkles className="w-4 h-4" />
                 <span>Executive Intelligence Brief & Key Takeaways</span>
               </div>
-              <ul className="space-y-1.5 text-xs sm:text-sm text-gray-800 list-disc list-inside">
+              <ul className="space-y-2 text-xs sm:text-sm text-gray-800 list-disc list-inside">
                 {article.aeoQuickTakeaways.map((takeaway, idx) => (
                   <li key={idx} className="leading-relaxed">
                     {takeaway}
@@ -257,8 +351,8 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
             </div>
           )}
 
-          {/* Paragraphs with Font Scaling */}
-          <div className={`space-y-4 sm:space-y-5 font-serif-body text-gray-800 ${fontClasses[fontSize]}`}>
+          {/* Paragraphs with Fluid Font Scaling */}
+          <div className={`space-y-4 sm:space-y-6 font-serif-body text-gray-800 ${fontClasses[fontSize]}`}>
             {article.content.map((paragraph, index) => (
               <p key={index} className="leading-relaxed">
                 {paragraph}
@@ -280,10 +374,10 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
                     href={link.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-2.5 rounded bg-gray-50 hover:bg-emerald-50 border border-gray-200 transition-colors flex items-center justify-between text-xs text-gray-700 hover:text-[#0E5B44]"
+                    className="p-3 rounded bg-gray-50 hover:bg-emerald-50 border border-gray-200 transition-colors flex items-center justify-between text-xs text-gray-700 hover:text-[#0E5B44] min-h-[44px]"
                   >
                     <span className="font-semibold truncate mr-2">{link.text}</span>
-                    <ExternalLink className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+                    <ExternalLink className="w-4 h-4 text-gray-400 shrink-0" />
                   </a>
                 ))}
               </div>
@@ -292,7 +386,7 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
 
           {/* AEO FAQ Section */}
           {article.faq && article.faq.length > 0 && (
-            <div className="mt-8 p-4 bg-gray-50 rounded-xs border border-gray-200">
+            <div className="mt-8 p-4 sm:p-5 bg-gray-50 rounded-xs border border-gray-200">
               <div className="flex items-center space-x-2 text-gray-900 font-headline font-black uppercase text-base sm:text-lg mb-3">
                 <HelpCircle className="w-4 h-4 text-[#0E5B44]" />
                 <span>Frequently Asked Questions & Official Inquiries</span>
@@ -327,7 +421,7 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
                   placeholder="Your Name / Credential"
                   value={commenterName}
                   onChange={(e) => setCommenterName(e.target.value)}
-                  className="sm:col-span-1 border border-gray-300 rounded px-3 py-2 text-xs focus:ring-1 focus:ring-[#0E5B44] focus:outline-none"
+                  className="sm:col-span-1 border border-gray-300 rounded px-3 py-2 text-base sm:text-xs focus:ring-1 focus:ring-[#0E5B44] focus:outline-none min-h-[44px]"
                 />
                 <input
                   type="text"
@@ -335,13 +429,13 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
                   placeholder="Add your verified analysis to this story..."
                   value={newComment}
                   onChange={(e) => setNewComment(e.target.value)}
-                  className="sm:col-span-2 border border-gray-300 rounded px-3 py-2 text-xs focus:ring-1 focus:ring-[#0E5B44] focus:outline-none"
+                  className="sm:col-span-2 border border-gray-300 rounded px-3 py-2 text-base sm:text-xs focus:ring-1 focus:ring-[#0E5B44] focus:outline-none min-h-[44px]"
                 />
               </div>
               <div className="flex justify-end">
                 <button
                   type="submit"
-                  className="bg-[#0E5B44] hover:bg-[#083c2d] text-white font-bold text-xs uppercase px-4 py-2 rounded flex items-center space-x-1.5"
+                  className="bg-[#0E5B44] hover:bg-[#083c2d] text-white font-bold text-xs uppercase px-5 py-2.5 rounded flex items-center space-x-1.5 min-h-[44px] active:scale-95 transition-transform"
                 >
                   <Send className="w-3.5 h-3.5" />
                   <span>Submit Comment</span>
@@ -357,8 +451,8 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
                     <span className="text-[10px] text-gray-400">{c.time}</span>
                   </div>
                   <p className="text-gray-700 leading-relaxed mb-2">{c.text}</p>
-                  <div className="flex items-center space-x-1 text-gray-500 hover:text-[#0E5B44] cursor-pointer text-[11px]">
-                    <ThumbsUp className="w-3 h-3" />
+                  <div className="flex items-center space-x-1 text-gray-500 hover:text-[#0E5B44] cursor-pointer text-[11px] p-1">
+                    <ThumbsUp className="w-3.5 h-3.5" />
                     <span>{c.likes}</span>
                   </div>
                 </div>
@@ -377,15 +471,23 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
                   key={rel.id}
                   onClick={() => {
                     onOpenArticle(rel);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    if (scrollContainerRef.current) {
+                      scrollContainerRef.current.scrollTop = 0;
+                    }
                   }}
                   className="cursor-pointer group flex space-x-3 items-start border-b border-gray-100 pb-3"
                 >
-                  <img
-                    src={rel.imageUrl}
-                    alt={rel.title}
-                    className="w-20 h-16 object-cover rounded-xs shrink-0 bg-gray-100"
-                  />
+                  <div className="w-20 h-16 shrink-0 aspect-[5/4] overflow-hidden rounded-xs bg-gray-100">
+                    <img
+                      src={rel.imageUrl}
+                      alt={rel.title}
+                      width={80}
+                      height={64}
+                      loading="lazy"
+                      decoding="async"
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                   <div>
                     <h4 className="font-headline font-black text-xs sm:text-sm uppercase tracking-tight text-gray-900 group-hover:text-[#0E5B44] leading-snug line-clamp-2">
                       {rel.title}
@@ -397,6 +499,69 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
             </div>
           </div>
         </article>
+
+        {/* Mobile Edge-to-Edge Sticky Bottom Quick Actions Bar */}
+        <div 
+          className="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-gray-200 px-3 py-2 flex items-center justify-around shadow-[0_-4px_16px_rgba(0,0,0,0.1)] pb-safe"
+        >
+          {/* Font Toggle */}
+          <button
+            onClick={cycleFontSize}
+            className="flex flex-col items-center justify-center touch-target-44 text-gray-700 hover:text-black"
+            aria-label="Cycle text size"
+          >
+            <Type className="w-5 h-5" />
+            <span className="text-[10px] font-bold mt-0.5 uppercase">
+              {fontSize === 'normal' ? 'Font: 1x' : fontSize === 'large' ? 'Font: 1.2x' : 'Font: 1.5x'}
+            </span>
+          </button>
+
+          {/* Audio Listen */}
+          <button
+            onClick={() => setIsPlayingAudio(!isPlayingAudio)}
+            className={`flex flex-col items-center justify-center touch-target-44 ${
+              isPlayingAudio ? 'text-[#0E5B44]' : 'text-gray-700 hover:text-black'
+            }`}
+            aria-label="Listen to story"
+          >
+            {isPlayingAudio ? <VolumeX className="w-5 h-5 text-[#0E5B44]" /> : <Volume2 className="w-5 h-5" />}
+            <span className="text-[10px] font-bold mt-0.5 uppercase">
+              {isPlayingAudio ? 'Pause' : 'Listen'}
+            </span>
+          </button>
+
+          {/* Share */}
+          <button
+            onClick={handleShare}
+            className="flex flex-col items-center justify-center touch-target-44 text-gray-700 hover:text-black"
+            aria-label="Share article"
+          >
+            <Share2 className="w-5 h-5" />
+            <span className="text-[10px] font-bold mt-0.5 uppercase">Share</span>
+          </button>
+
+          {/* Bookmark */}
+          <button
+            onClick={() => setBookmarked(!bookmarked)}
+            className={`flex flex-col items-center justify-center touch-target-44 ${
+              bookmarked ? 'text-[#F02D5E]' : 'text-gray-700 hover:text-black'
+            }`}
+            aria-label="Bookmark article"
+          >
+            <Bookmark className={`w-5 h-5 ${bookmarked ? 'fill-current' : ''}`} />
+            <span className="text-[10px] font-bold mt-0.5 uppercase">Save</span>
+          </button>
+
+          {/* Close */}
+          <button
+            onClick={onClose}
+            className="flex flex-col items-center justify-center touch-target-44 text-red-600 hover:text-red-700 font-bold"
+            aria-label="Close article"
+          >
+            <X className="w-5 h-5" />
+            <span className="text-[10px] uppercase">Close</span>
+          </button>
+        </div>
       </div>
     </div>
   );

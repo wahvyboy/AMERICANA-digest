@@ -73,10 +73,10 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({ isOpen, onClose 
     : '#';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/70 backdrop-blur-xs">
-      <div className="bg-white rounded-md max-w-xl w-full shadow-2xl flex flex-col overflow-hidden border-t-4 border-[#0E5B44]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-black/75 backdrop-blur-xs">
+      <div className="bg-white rounded-md max-w-xl w-full shadow-2xl flex flex-col overflow-hidden border-t-4 border-[#0E5B44] max-h-[92vh]">
         {/* Top Header */}
-        <div className="bg-[#0E5B44] text-white p-4 flex items-center justify-between">
+        <div className="bg-[#0E5B44] text-white p-3.5 sm:p-4 flex items-center justify-between pt-safe">
           <div className="flex items-center space-x-2.5">
             <Mail className="w-5 h-5 text-emerald-200" />
             <div>
@@ -90,18 +90,18 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({ isOpen, onClose 
           </div>
           <button
             onClick={onClose}
-            className="p-1 hover:bg-[#083c2d] rounded-md transition-colors"
+            className="touch-target-44 p-2 hover:bg-[#083c2d] rounded-md transition-colors"
             aria-label="Close modal"
           >
             <X className="w-5 h-5 text-white" />
           </button>
         </div>
 
-        <div className="p-5 sm:p-6 overflow-y-auto max-h-[80vh]">
+        <div className="p-4 sm:p-6 overflow-y-auto">
           {!preparedEmail ? (
             <div>
               <div className="text-center mb-5">
-                <span className="inline-block bg-emerald-50 text-[#0E5B44] text-xs font-extrabold uppercase px-3 py-1 rounded-full border border-emerald-200 mb-2">
+                <span className="inline-block bg-emerald-50 text-[#0E5B44] text-xs font-black uppercase px-3 py-1 rounded-full border border-emerald-200 mb-2">
                   Direct Email Dispatch
                 </span>
                 <p className="text-gray-700 text-xs sm:text-sm leading-relaxed max-w-md mx-auto">
@@ -116,10 +116,11 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({ isOpen, onClose 
                   </label>
                   <input
                     type="text"
+                    inputMode="text"
                     value={nameInput}
                     onChange={(e) => setNameInput(e.target.value)}
                     placeholder="e.g. Eleanor Roosevelt"
-                    className="w-full border border-gray-300 rounded px-3.5 py-2 text-sm text-gray-900 focus:ring-1 focus:ring-[#0E5B44] focus:outline-none"
+                    className="w-full border border-gray-300 rounded px-3.5 py-2.5 text-base sm:text-sm text-gray-900 focus:ring-1 focus:ring-[#0E5B44] focus:outline-none min-h-[44px]"
                   />
                 </div>
 
@@ -129,11 +130,12 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({ isOpen, onClose 
                   </label>
                   <input
                     type="email"
+                    inputMode="email"
                     required
                     value={emailInput}
                     onChange={(e) => setEmailInput(e.target.value)}
                     placeholder="you@example.com"
-                    className="w-full border border-gray-300 rounded px-3.5 py-2 text-sm text-gray-900 focus:ring-1 focus:ring-[#0E5B44] focus:outline-none"
+                    className="w-full border border-gray-300 rounded px-3.5 py-2.5 text-base sm:text-sm text-gray-900 focus:ring-1 focus:ring-[#0E5B44] focus:outline-none min-h-[44px]"
                   />
                 </div>
 
@@ -145,7 +147,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({ isOpen, onClose 
                     {topicsList.map((topic) => (
                       <label
                         key={topic}
-                        className={`flex items-center space-x-2.5 p-2 rounded border cursor-pointer transition-colors ${
+                        className={`flex items-center space-x-2.5 p-3 rounded border cursor-pointer transition-colors min-h-[44px] ${
                           selectedTopics.includes(topic)
                             ? 'border-[#0E5B44] bg-emerald-50/50 text-[#0E5B44] font-bold'
                             : 'border-gray-200 text-gray-600 hover:bg-gray-50'
@@ -155,9 +157,9 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({ isOpen, onClose 
                           type="checkbox"
                           checked={selectedTopics.includes(topic)}
                           onChange={() => handleTopicToggle(topic)}
-                          className="rounded text-[#0E5B44] focus:ring-[#0E5B44]"
+                          className="w-4 h-4 rounded text-[#0E5B44] focus:ring-[#0E5B44]"
                         />
-                        <span>{topic}</span>
+                        <span className="text-xs sm:text-sm">{topic}</span>
                       </label>
                     ))}
                   </div>
@@ -166,9 +168,9 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({ isOpen, onClose 
                 <div className="pt-2">
                   <button
                     type="submit"
-                    className="w-full bg-[#F02D5E] hover:bg-[#d92250] text-white font-black text-sm uppercase tracking-wider py-3 px-6 rounded shadow-md transition-transform active:scale-98 flex items-center justify-center space-x-2"
+                    className="w-full bg-[#F02D5E] hover:bg-[#d92250] text-white font-black text-sm uppercase tracking-wider py-3.5 px-6 rounded shadow-md transition-transform active:scale-98 flex items-center justify-center space-x-2 min-h-[48px]"
                   >
-                    <Mail className="w-4 h-4" />
+                    <Mail className="w-5 h-5" />
                     <span>Generate & Send Subscriber Email</span>
                   </button>
                 </div>
@@ -197,7 +199,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({ isOpen, onClose 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                 <a
                   href={preparedEmail.mailtoUrl}
-                  className="bg-[#0E5B44] hover:bg-[#083c2d] text-white font-bold text-xs uppercase tracking-wider py-2.5 px-4 rounded text-center flex items-center justify-center space-x-1.5 shadow-xs"
+                  className="bg-[#0E5B44] hover:bg-[#083c2d] text-white font-bold text-xs uppercase tracking-wider py-3 px-4 rounded text-center flex items-center justify-center space-x-1.5 shadow-xs min-h-[48px] active:scale-95 transition-transform"
                 >
                   <Mail className="w-4 h-4" />
                   <span>Open In Default Mail App</span>
@@ -207,7 +209,7 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({ isOpen, onClose 
                   href={gmailWebUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-[#F02D5E] hover:bg-[#d92250] text-white font-bold text-xs uppercase tracking-wider py-2.5 px-4 rounded text-center flex items-center justify-center space-x-1.5 shadow-xs"
+                  className="bg-[#F02D5E] hover:bg-[#d92250] text-white font-bold text-xs uppercase tracking-wider py-3 px-4 rounded text-center flex items-center justify-center space-x-1.5 shadow-xs min-h-[48px] active:scale-95 transition-transform"
                 >
                   <ExternalLink className="w-4 h-4" />
                   <span>Open In Gmail Web</span>
@@ -220,33 +222,42 @@ export const SubscribeModal: React.FC<SubscribeModalProps> = ({ isOpen, onClose 
                   <span className="font-bold text-gray-700">Pre-Formed Email Content</span>
                   <button
                     onClick={handleCopyBody}
-                    className="text-[#0E5B44] hover:underline font-bold flex items-center space-x-1"
+                    className="touch-target-44 text-xs font-bold text-[#0E5B44] hover:text-[#083c2d] flex items-center space-x-1"
                   >
-                    {copied ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5" />}
-                    <span>{copied ? 'Copied!' : 'Copy Text'}</span>
+                    {copied ? (
+                      <>
+                        <Check className="w-3.5 h-3.5 text-emerald-600" />
+                        <span className="text-emerald-700">Copied!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-3.5 h-3.5" />
+                        <span>Copy Text</span>
+                      </>
+                    )}
                   </button>
                 </div>
-                <div className="space-y-1 font-mono text-[11px] text-gray-700">
-                  <p><strong>To:</strong> {preparedEmail.recipient}</p>
-                  <p><strong>Subject:</strong> {preparedEmail.subject}</p>
-                  <pre className="mt-2 p-2 bg-white rounded border border-gray-200 whitespace-pre-wrap font-sans text-xs">
-                    {preparedEmail.body}
-                  </pre>
+                <div className="text-[11px] text-gray-500 font-mono mb-1">
+                  <strong>To:</strong> {preparedEmail.recipient}
                 </div>
+                <div className="text-[11px] text-gray-500 font-mono mb-2">
+                  <strong>Subject:</strong> {preparedEmail.subject}
+                </div>
+                <pre className="text-gray-700 font-mono text-[11px] whitespace-pre-wrap bg-white p-2 rounded border border-gray-200 max-h-36 overflow-y-auto">
+                  {preparedEmail.body}
+                </pre>
               </div>
 
               <div className="flex justify-between items-center pt-2">
                 <button
-                  type="button"
                   onClick={() => setPreparedEmail(null)}
-                  className="text-xs text-gray-500 hover:text-gray-900 underline"
+                  className="text-xs text-gray-500 hover:text-gray-800 underline touch-target-44"
                 >
-                  ← Edit details
+                  ← Edit subscription options
                 </button>
                 <button
-                  type="button"
                   onClick={onClose}
-                  className="bg-gray-900 hover:bg-black text-white text-xs font-bold px-4 py-2 rounded"
+                  className="bg-gray-200 hover:bg-gray-300 text-gray-800 text-xs font-bold uppercase py-2 px-5 rounded touch-target-44"
                 >
                   Done
                 </button>

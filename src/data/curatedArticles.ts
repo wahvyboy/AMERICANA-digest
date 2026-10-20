@@ -16,7 +16,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-19T07:30:00Z',
     timeAgo: '15 min ago',
     readTime: '6 min read',
-    imageUrl: '/images/starlink-launch.jpg',
+    imageUrl: '/images/starlink-launch.webp',
     imageCaption: 'A SpaceX Falcon heavy launch vehicle lifts off as national security debates escalate over private orbital communications sovereignty.',
     isLeadStory: true,
     viewsCount: 184290,
@@ -63,7 +63,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-19T06:45:00Z',
     timeAgo: '42 min ago',
     readTime: '5 min read',
-    imageUrl: '/images/labor-workers.jpg',
+    imageUrl: '/images/labor-workers.webp',
     imageCaption: 'American manufacturing, logistics, and service sector employees face sudden salary exemption threshold revisions under Department of Labor guidance.',
     isBreaking: true,
     viewsCount: 248400,
@@ -103,7 +103,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-19T06:10:00Z',
     timeAgo: '1 hour ago',
     readTime: '4 min read',
-    imageUrl: '/images/hegseth.jpg',
+    imageUrl: '/images/hegseth.webp',
     imageCaption: 'Defense appointee Pete Hegseth during an official military symposium address as security details intercept demonstrators.',
     summary: 'Protesters repeatedly interrupted Defense appointee Pete Hegseth during an address at the Association of the United States Army symposium in Washington.',
     content: [
@@ -135,7 +135,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-19T05:45:00Z',
     timeAgo: '1 hour ago',
     readTime: '4 min read',
-    imageUrl: '/images/thom-tillis.jpg',
+    imageUrl: '/images/thom-tillis.webp',
     imageCaption: 'North Carolina Senator Thom Tillis at the U.S. Capitol navigating intra-party primary challenges from the conservative grassroots.',
     summary: 'The North Carolina senator continues his tightrope balancing act, praising former President Trump despite recurring primary threats from the MAGA wing.',
     content: [
@@ -163,7 +163,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-19T05:00:00Z',
     timeAgo: '2 hours ago',
     readTime: '5 min read',
-    imageUrl: '/images/campaign-finance.jpg',
+    imageUrl: '/images/campaign-finance.webp',
     imageCaption: 'The United States Capitol and campaign war rooms absorb record-shattering $10 billion political advertising blitzes.',
     summary: 'Political ad spending trackers confirm the midterm cycle will obliterate all historical records, surpassing $10 billion in digital, streaming, and broadcast television blitzes.',
     content: [
@@ -191,7 +191,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-19T04:30:00Z',
     timeAgo: '2 hours ago',
     readTime: '3 min read',
-    imageUrl: '/images/donald-trump.jpg',
+    imageUrl: '/images/donald-trump.webp',
     imageCaption: 'Donald Trump addresses supporters during a Midwest campaign rally as contradictory policy claims generate local fallout.',
     summary: 'During a Dayton campaign rally, Donald Trump launched a blistering tirade against an Ohio infrastructure tax break—unaware his handpicked Republican candidate authored and celebrated the exact bill.',
     content: [
@@ -219,7 +219,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-19T03:00:00Z',
     timeAgo: '4 hours ago',
     readTime: '6 min read',
-    imageUrl: '/images/us-capitol.jpg',
+    imageUrl: '/images/us-capitol.webp',
     imageCaption: 'The Capitol dome stands under overcast skies as pollsters caution against over-interpreting cyclical midterm sentiment.',
     summary: 'Even if Democrats regain House control, underlying structural shifts among non-college educated voters and male demographic cohorts present profound existential risks.',
     content: [
@@ -246,7 +246,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-19T02:15:00Z',
     timeAgo: '5 hours ago',
     readTime: '5 min read',
-    imageUrl: '/images/scotus-facade.jpg',
+    imageUrl: '/images/scotus-facade.webp',
     imageCaption: 'The United States Supreme Court bench delivers an emergency ruling on campaign expenditure disclosures.',
     summary: 'In a 6-3 emergency ruling, the Supreme Court struck down state disclosure restrictions on dark-money political action committees broadcasting 30 days before elections.',
     content: [
@@ -273,7 +273,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-19T01:45:00Z',
     timeAgo: '6 hours ago',
     readTime: '4 min read',
-    imageUrl: '/images/chick-fil-a.jpg',
+    imageUrl: '/images/chick-fil-a.webp',
     imageCaption: 'Corporate headquarters face investor scrutiny as corporate social governance pledges collide with consumer expectations.',
     summary: 'During a corporate leadership summit, Chick-Fil-A’s chief executive deflected direct inquiries regarding LGBTQ+ nondiscrimination policies, reigniting culture-war scrutiny.',
     content: [
@@ -300,7 +300,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-19T01:00:00Z',
     timeAgo: '6 hours ago',
     readTime: '5 min read',
-    imageUrl: '/images/doj-building.jpg',
+    imageUrl: '/images/doj-building.webp',
     imageCaption: 'The Robert F. Kennedy Department of Justice building in Washington as federal antitrust attorneys target legal credentialing bodies.',
     summary: 'The Department of Justice issued a formal civil investigative demand to the American Bar Association, probing whether its diversity standards for law schools constitute anticompetitive restraint of trade.',
     content: [
@@ -327,7 +327,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T23:30:00Z',
     timeAgo: '7 hours ago',
     readTime: '4 min read',
-    imageUrl: '/images/abdul-el-sayed.jpg',
+    imageUrl: '/images/abdul-el-sayed.webp',
     imageCaption: 'Debate hall podium and audience microphones as articulate exchange garners millions of views across digital platforms.',
     summary: 'A video of Dr. Abdul El-Sayed systematically debunking a hostile question about public health subsidies reached over 8 million views in 24 hours.',
     content: [
@@ -354,7 +354,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T22:00:00Z',
     timeAgo: '8 hours ago',
     readTime: '4 min read',
-    imageUrl: '/images/james-carville.jpg',
+    imageUrl: '/images/james-carville.webp',
     imageCaption: 'Veteran Democratic strategist James Carville challenges on-air narratives during a high-profile cable news broadcast.',
     summary: 'Appearing as a guest on Newsmax, veteran strategist James Carville refused to entertain scripted talking points, warning that economic backlash in key counties will stun both parties.',
     content: [
@@ -381,7 +381,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T21:00:00Z',
     timeAgo: '9 hours ago',
     readTime: '5 min read',
-    imageUrl: '/images/federal-execution-facility.jpg',
+    imageUrl: '/images/federal-execution-facility.webp',
     imageCaption: 'The United States Penitentiary Terre Haute federal execution chamber complex, center of heated executive sentencing controversies.',
     summary: 'Aide briefings reveal Donald Trump has cooled on plans to publicly broadcast federal death penalty executions after constitutional scholars outlined catastrophic legal exposure.',
     content: [
@@ -408,7 +408,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T20:00:00Z',
     timeAgo: '10 hours ago',
     readTime: '4 min read',
-    imageUrl: '/images/megyn-kelly.jpg',
+    imageUrl: '/images/megyn-kelly.webp',
     imageCaption: 'Broadcaster Megyn Kelly provides sharp media criticism on press rollouts and White House podium dynamics.',
     summary: 'On her podcast, Megyn Kelly eviscerated the new press secretary rollout, warning that dodging factual questions damages executive credibility.',
     content: [
@@ -435,7 +435,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T19:30:00Z',
     timeAgo: '11 hours ago',
     readTime: '3 min read',
-    imageUrl: '/images/scott-jennings.jpg',
+    imageUrl: '/images/scott-jennings.webp',
     imageCaption: 'Conservative political analyst Scott Jennings delivers a sharp retort during a live CNN election panel.',
     summary: 'The GOP commentator cracked up the CNN roundtable with a deadpan retort after an anchor joked about him being passed over for White House Press Secretary.',
     content: [
@@ -462,7 +462,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T18:00:00Z',
     timeAgo: '12 hours ago',
     readTime: '5 min read',
-    imageUrl: '/images/jen-psaki.jpg',
+    imageUrl: '/images/jen-psaki.webp',
     imageCaption: 'Former White House Press Secretary Jen Psaki analyzes the tactical pressure of the White House briefing podium.',
     summary: 'The former Biden press secretary broke down tape of the chaotic briefing, providing an insider breakdown of how defensiveness invites press corps bloodsport.',
     content: [
@@ -489,7 +489,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T17:00:00Z',
     timeAgo: '13 hours ago',
     readTime: '4 min read',
-    imageUrl: '/images/mike-johnson.jpg',
+    imageUrl: '/images/mike-johnson.webp',
     imageCaption: 'House Speaker Mike Johnson fields aggressive questions regarding federal jurisdiction and legislative oversight.',
     summary: 'Speaker Mike Johnson faced intense pushback when questioned about federal enforcement raids targeting congressional district casework offices.',
     content: [
@@ -516,7 +516,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T16:00:00Z',
     timeAgo: '14 hours ago',
     readTime: '4 min read',
-    imageUrl: '/images/white-house-press.jpg',
+    imageUrl: '/images/white-house-press.webp',
     imageCaption: 'Press Secretary Katie Zacharia fields questions from the White House press corps during a tense briefing in the James S. Brady room.',
     summary: 'Micro-expression analysts identified repeated self-soothing gestures, lectern gripping, and vocal stress during tense budget question rounds.',
     content: [
@@ -543,7 +543,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T15:00:00Z',
     timeAgo: '15 hours ago',
     readTime: '6 min read',
-    imageUrl: '/images/intimacy-counseling.jpg',
+    imageUrl: '/images/intimacy-counseling.webp',
     imageCaption: 'Clinical psychologists and licensed marriage counselors address the unspoken anxieties surrounding male intimacy.',
     summary: 'Licensed sex therapists open up about the private anxieties men carry regarding performance, physical aging, and emotional intimacy.',
     content: [
@@ -570,7 +570,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T14:00:00Z',
     timeAgo: '16 hours ago',
     readTime: '4 min read',
-    imageUrl: '/images/couple-laughter.jpg',
+    imageUrl: '/images/couple-laughter.webp',
     imageCaption: 'Viral humorists capture the shared eccentricities and micro-negotiations of modern domestic life.',
     summary: 'From thermostat standoffs to competitive grocery unpacking, writers and couples capture the everyday absurdity of shared domestic life.',
     content: [
@@ -597,7 +597,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T13:00:00Z',
     timeAgo: '17 hours ago',
     readTime: '5 min read',
-    imageUrl: '/images/tech-circuit.jpg',
+    imageUrl: '/images/tech-circuit.webp',
     imageCaption: 'Macro photography of high-speed interconnects and silicon architecture that standardized peripheral computing in 1996.',
     summary: 'Universal Serial Bus revolutionized computing peripherals in 1996, eliminating a nightmare jungle of RS-232, SCSI, parallel printer, and PS/2 ports.',
     content: [
@@ -628,7 +628,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T12:00:00Z',
     timeAgo: '18 hours ago',
     readTime: '5 min read',
-    imageUrl: '/images/family-digital.jpg',
+    imageUrl: '/images/family-digital.webp',
     imageCaption: 'Child psychologists discuss digital privacy and social media consent boundaries across family generations.',
     summary: 'Child psychologists break down the digital privacy boundary regarding children’s photos and location tags that causes intense intergenerational friction.',
     content: [
@@ -655,7 +655,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T11:00:00Z',
     timeAgo: '19 hours ago',
     readTime: '3 min read',
-    imageUrl: '/images/machine-gun-kelly.jpg',
+    imageUrl: '/images/machine-gun-kelly.webp',
     imageCaption: 'Celebrity press events and entertainment industry figures confront an explosion of algorithmic disinformation.',
     summary: 'The musician took to Instagram comments to call out a fabricated viral quote circulating across gossip accounts regarding his past relationship.',
     content: [
@@ -682,7 +682,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T10:00:00Z',
     timeAgo: '20 hours ago',
     readTime: '7 min read',
-    imageUrl: '/images/social-security.jpg',
+    imageUrl: '/images/social-security.webp',
     imageCaption: 'Citizens navigate understaffed federal casework desks as retirement benefit calculations undergo scrutiny.',
     summary: 'A 63-year-old contributor recounts navigating the understaffed federal bureaucracy, discovering discrepancies between online calculators and actual benefit calculations.',
     content: [
@@ -714,7 +714,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T09:00:00Z',
     timeAgo: '21 hours ago',
     readTime: '4 min read',
-    imageUrl: '/images/pain-relief-gel.jpg',
+    imageUrl: '/images/pain-relief-gel.webp',
     imageCaption: 'Topical transdermal formulations utilize targeted menthol and camphor delivery for rapid musculoskeletal relief.',
     summary: 'Shoppers suffering from chronic lumbar stiffness, osteoarthritis, and workout soreness have made this mess-free cryogenic roller a bestselling staple.',
     content: [
@@ -741,7 +741,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T08:00:00Z',
     timeAgo: '22 hours ago',
     readTime: '4 min read',
-    imageUrl: '/images/water-flosser.jpg',
+    imageUrl: '/images/water-flosser.webp',
     imageCaption: 'Engineered with high-frequency micro-pulses, compact hydro-flossers deliver clinical-grade periodontal care.',
     summary: 'With 1,800 pulses per minute, IPX7 waterproofing, and a 30-day USB-C charge, this affordable dental device disrupts overpriced legacy oral health brands.',
     content: [
@@ -768,7 +768,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T07:00:00Z',
     timeAgo: '23 hours ago',
     readTime: '6 min read',
-    imageUrl: '/images/glp1-medicine.jpg',
+    imageUrl: '/images/glp1-medicine.webp',
     imageCaption: 'Endocrinologists outline clinical counter-measures for gastrointestinal symptoms in GLP-1 receptor agonist therapy.',
     summary: 'From nausea and sulphur burps to muscle mass decline, board-certified endocrinologists break down the evidence-backed supplements and hydration regimens patients require.',
     content: [
@@ -795,7 +795,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T06:00:00Z',
     timeAgo: '1 day ago',
     readTime: '5 min read',
-    imageUrl: '/images/running-shoes.jpg',
+    imageUrl: '/images/running-shoes.webp',
     imageCaption: 'Orthopedic footbed geometry and multi-density foam outsoles reduce plantar impact for extended standing shifts.',
     summary: 'Nurses, teachers, and frequent walkers have made these ultra-cushioned slip-on recovery shoes a runaway viral sensation across hospitals and schools.',
     content: [
@@ -822,7 +822,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T05:00:00Z',
     timeAgo: '1 day ago',
     readTime: '4 min read',
-    imageUrl: '/images/skincare-serum.jpg',
+    imageUrl: '/images/skincare-serum.webp',
     imageCaption: 'Spicule-infused dermal solutions accelerate cellular turnover by mimicking micro-needling collagen induction.',
     summary: 'Infused with spicule micro-needling botanicals, this viral Seoul formula visibly refines pore diameter and hyperpigmentation.',
     content: [
@@ -849,7 +849,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T04:00:00Z',
     timeAgo: '1 day ago',
     readTime: '4 min read',
-    imageUrl: '/images/eyebrow-peptide.jpg',
+    imageUrl: '/images/eyebrow-peptide.webp',
     imageCaption: 'Peptide complexes and botanical microfibers restore brow density without harsh permanent adhesives.',
     summary: 'From peptide micro-fillers to tinted botanical fibers, brow stylists share the 4 tested formulations that actually awaken dormant follicles.',
     content: [
@@ -876,7 +876,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T03:00:00Z',
     timeAgo: '1 day ago',
     readTime: '5 min read',
-    imageUrl: '/images/coffee-maker.jpg',
+    imageUrl: '/images/coffee-maker.webp',
     imageCaption: 'Thermal PID stability and 9-bar extraction pumps elevate countertop specialty coffee brewing.',
     summary: 'From precision showerhead drip brewers to commercial-grade espresso machines with PID thermal control, these kitchen tools transform morning coffee.',
     content: [
@@ -903,7 +903,7 @@ export const CURATED_ARTICLES: Article[] = [
     publishedAt: '2026-10-18T02:00:00Z',
     timeAgo: '1 day ago',
     readTime: '4 min read',
-    imageUrl: '/images/pill-reminder.jpg',
+    imageUrl: '/images/pill-reminder.webp',
     imageCaption: 'Audible chime alerts, cellular syncing, and tamper-resistant rotation ensure strict pharmaceutical compliance.',
     summary: 'With rotating time-locked compartments and smartphone chime sync, this smart dispenser solves prescription non-adherence for families.',
     content: [
