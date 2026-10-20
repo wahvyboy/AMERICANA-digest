@@ -100,26 +100,26 @@ export const Header: React.FC<HeaderProps> = ({
       <header className="sticky top-0 z-40 bg-[#0E5B44] text-white shadow-md pt-safe">
         {/* Main Header Bar with safe-area padding & 48px touch targets */}
         <div className="max-w-7xl mx-auto px-2 sm:px-6 h-14 sm:h-16 flex items-center justify-between">
-          {/* Left: Mobile Drawer Button & Search with 48px min touch targets */}
-          <div className="flex items-center space-x-1 sm:space-x-2">
+          {/* Left: Mobile Drawer Button & Search with ergonomic touch targets */}
+          <div className="flex items-center space-x-0.5 sm:space-x-2 shrink-0">
             <button
               onClick={() => setDrawerOpen(true)}
-              className="touch-target p-2 sm:p-2.5 hover:bg-[#083c2d] active:bg-[#062c20] rounded-md transition-colors"
+              className="p-1.5 sm:p-2.5 hover:bg-[#083c2d] active:bg-[#062c20] rounded-md transition-colors"
               aria-label="Open navigation menu"
             >
-              <Menu className="w-6 h-6 text-white" />
+              <Menu className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
             </button>
             <button
               onClick={() => setSearchOpen(!isSearchOpen)}
-              className="touch-target p-2 sm:p-2.5 hover:bg-[#083c2d] active:bg-[#062c20] rounded-md transition-colors"
+              className="p-1.5 sm:p-2.5 hover:bg-[#083c2d] active:bg-[#062c20] rounded-md transition-colors"
               aria-label="Toggle search input"
             >
-              <Search className="w-5 h-5 text-emerald-100 hover:text-white" />
+              <Search className="w-4 h-4 sm:w-5 sm:h-5 text-emerald-100 hover:text-white" />
             </button>
           </div>
 
-          {/* Center: Signature HuffPost-Style Logo */}
-          <div className="flex-1 text-center sm:text-left sm:ml-4">
+          {/* Center: Signature Editorial Logo with Company Emblem Mark in Link */}
+          <div className="flex-1 text-center sm:text-left sm:ml-4 px-1 min-w-0">
             <a
               href="/"
               onClick={(e) => {
@@ -127,34 +127,39 @@ export const Header: React.FC<HeaderProps> = ({
                 onSelectCategory('All');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
               }}
-              className="inline-block text-left group py-1"
+              className="inline-flex items-center space-x-1.5 sm:space-x-2.5 group py-1 align-middle max-w-full"
+              aria-label="Americana Digest Homepage"
             >
-              <span className="font-logo text-lg sm:text-3xl md:text-4xl tracking-tighter text-white font-black group-hover:opacity-95 transition-opacity whitespace-nowrap">
+              {/* Americana Digest Official Emblem Inside Link */}
+              <div className="w-5 h-5 sm:w-8 sm:h-8 rounded-xs bg-white text-[#0E5B44] flex items-center justify-center font-serif font-black text-[10px] sm:text-sm tracking-tighter shadow-xs border border-emerald-950/20 shrink-0 select-none group-hover:scale-105 transition-transform">
+                AD
+              </div>
+              <span className="font-logo text-xs xs:text-sm sm:text-2xl md:text-3xl tracking-tight text-white font-black group-hover:opacity-95 transition-opacity whitespace-nowrap overflow-hidden text-ellipsis">
                 AMERICANA DIGEST
               </span>
             </a>
           </div>
 
-          {/* Right: Support Us & Subscriber Actions with ergonomic touch areas */}
-          <div className="flex items-center space-x-1.5 sm:space-x-3">
-            {/* Support Us Button */}
+          {/* Right: Support Us & Subscriber Actions - Reduced to fit and avoid clustering */}
+          <div className="flex items-center space-x-1 sm:space-x-2 shrink-0">
+            {/* Support Us Button - Compact & Fitted */}
             <button
               onClick={onOpenSupport}
-              className="bg-[#F02D5E] hover:bg-[#d92250] active:scale-95 text-white font-black text-xs sm:text-sm px-3 sm:px-4 py-2 sm:py-2 rounded-full uppercase tracking-wider shadow-sm transition-transform flex items-center space-x-1 min-h-[44px]"
+              className="bg-[#F02D5E] hover:bg-[#d92250] active:scale-95 text-white font-extrabold text-[10px] sm:text-xs px-2 sm:px-3.5 py-1 sm:py-1.5 rounded-full uppercase tracking-wider shadow-xs transition-all flex items-center space-x-1 min-h-[30px] sm:min-h-[38px]"
               aria-label="Support Independent Journalism"
             >
-              <Heart className="w-3.5 h-3.5 fill-current hidden sm:inline" />
+              <Heart className="w-3 h-3 sm:w-3.5 sm:h-3.5 fill-current hidden xs:inline" />
               <span>SUPPORT</span>
             </button>
 
-            {/* Subscribe Free Button */}
+            {/* Subscribe Free Button - Hidden on mobile to avoid clustering */}
             <button
               onClick={onOpenSubscriberModal}
-              className="bg-emerald-800 hover:bg-emerald-700 active:scale-95 text-white text-xs sm:text-sm font-bold px-3 sm:px-4 py-2 sm:py-2 rounded-full uppercase tracking-wider flex items-center space-x-1.5 min-h-[44px]"
+              className="hidden sm:flex bg-emerald-800 hover:bg-emerald-700 active:scale-95 text-white text-xs font-bold px-3 py-1.5 rounded-full uppercase tracking-wider items-center space-x-1 min-h-[38px]"
               aria-label="Subscribe to free dispatch"
             >
               <Mail className="w-3.5 h-3.5" />
-              <span className="hidden sm:inline">Subscribe</span>
+              <span>Subscribe</span>
             </button>
           </div>
         </div>
@@ -242,9 +247,14 @@ export const Header: React.FC<HeaderProps> = ({
 
           {/* Drawer Sliding Sheet */}
           <div className="relative w-80 max-w-[85vw] bg-[#0E5B44] text-white flex flex-col h-full shadow-2xl z-10 pt-safe pb-safe transform transition-transform duration-300 ease-out">
-            {/* Drawer Header */}
+            {/* Drawer Header with Official AD Badge */}
             <div className="p-4 border-b border-emerald-800 flex items-center justify-between">
-              <span className="font-logo text-xl italic font-black">AMERICANA DIGEST</span>
+              <div className="flex items-center space-x-2">
+                <div className="w-6 h-6 rounded-xs bg-white text-[#0E5B44] flex items-center justify-center font-serif font-black text-xs shrink-0 select-none">
+                  AD
+                </div>
+                <span className="font-logo text-lg font-black tracking-tight">AMERICANA DIGEST</span>
+              </div>
               <button
                 onClick={() => setDrawerOpen(false)}
                 className="touch-target p-2 hover:bg-[#083c2d] active:bg-[#062c20] rounded-md transition-colors"

@@ -68,7 +68,7 @@ export default function App() {
     return () => window.removeEventListener('popstate', handleUrlRoute);
   }, []);
 
-  const leadArticle = CURATED_ARTICLES[0]; // SpaceX & Ukraine
+  const leadArticle = CURATED_ARTICLES[0]; // Jack Whigham Hospital Collapse Story
   const latestNewsLead = CURATED_ARTICLES.find(a => a.id === 'trump-workers-pay-cut') || CURATED_ARTICLES[1];
 
   // Specific groups for signature HuffPost layout recreation

@@ -43,6 +43,8 @@ export interface Article {
   isLeadStory?: boolean;
   tags: string[];
   viewsCount: number;
+  likesCount?: number;
+  commentsCount?: number;
 }
 
 export interface LiveUpdate {

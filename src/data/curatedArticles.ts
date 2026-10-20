@@ -1,51 +1,64 @@
 import { Article } from '../types';
 
 export const CURATED_ARTICLES: Article[] = [
-  // 1. Splash Lead
+  // 1. Splash Lead: Jack Whigham Breaking Story
   {
-    id: 'lead-spacex-ukraine',
-    title: 'Musk Blames Government While Don Stacks The Deck Over Starlink Feud',
-    headlinePrefix: 'YIKES: SPACEX SCREWS UKRAINE',
-    subtitle: 'Musk insists federal directives forced network throttling as Ukrainian frontline communication stalls.',
+    id: 'jack-whigham-hospital-collapse',
+    title: 'BREAKING: Jack Whigham Taken to Hospital After Collapsing During Dinner in Georgia',
+    headlinePrefix: 'BREAKING: COLLAPSED AT DINNER',
+    subtitle: 'Hollywood talent agent Jack Whigham rushed to emergency care after slumping over table during late-night dinner in Brunswick, Georgia.',
     category: 'Latest News',
     author: {
-      name: 'Jonathan Vance',
-      role: 'Senior National Security Correspondent',
+      name: 'Elena Rostova',
+      role: 'Chief Hollywood & Investigative Correspondent',
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=120&q=80',
     },
-    publishedAt: '2026-10-19T07:30:00Z',
-    timeAgo: '15 min ago',
-    readTime: '6 min read',
-    imageUrl: '/images/starlink-launch.webp',
-    imageCaption: 'A SpaceX Falcon heavy launch vehicle lifts off as national security debates escalate over private orbital communications sovereignty.',
+    publishedAt: '2026-10-20T06:30:00Z',
+    timeAgo: 'Just Now',
+    readTime: '3 min read',
+    imageUrl: '/images/jack-whigham.webp',
+    imageCaption: 'Hollywood talent agent Jack Whigham photographed dining late-night in Brunswick, Georgia, shortly before collapsing at his table and being rushed to the hospital.',
     isLeadStory: true,
-    viewsCount: 184290,
-    summary: 'A fierce confrontation erupted after Ukrainian frontline commanders reported widespread outages across Starlink satellite terminals during active defensive maneuvers in the eastern theater.',
+    isBreaking: true,
+    viewsCount: 42180500,
+    likesCount: 2150000,
+    commentsCount: 18420,
+    summary: 'Hollywood talent agent Jack Whigham was taken to a local hospital early Monday morning after he suddenly collapsed during a late-night dinner in Brunswick, Georgia, sparking an emergency medical response.',
     content: [
-      'The diplomatic collision between the Pentagon and private aerospace giant SpaceX escalated dramatically this morning after Ukrainian defense officials confirmed critical communications blackouts across frontline sectors.',
-      'According to high-ranking defense sources speaking to Americana Digest, Ukrainian artillery coordinates and drone reconnaissance feeds were paralyzed for over three consecutive hours during a coordinated defensive sortie along the Dnipro line.',
-      'Musk took to social media and broadcast networks to push back forcefully, claiming that federal regulatory bottlenecks and shifting Department of Defense contract stipulations prevented unauthorized geofence extensions. However, national security analysts cite internal memos indicating backchannel negotiations between former President Trump and executive orbit liaisons.',
-      '“We cannot maintain a sovereign national defense framework that operates at the whim of private satellite bandwidth agreements,” noted a senior defense analyst at the Center for Strategic and International Studies (CSIS). “When tactical command and control depends on commercial aerospace discretion, constitutional checks are compromised.”',
-      'The fallout has reignited calls in Congress for immediate bipartisan antitrust and defense procurement hearings regarding the Pentagon’s sole-source contracts with commercial orbital launch providers.'
+      'BRUNSWICK, Georgia — Hollywood talent agent Jack Whigham was taken to a local hospital early Monday morning after he suddenly collapsed during a late-night dinner in Brunswick, Georgia.',
+      'According to an eyewitness, the incident happened at about 2:31 a.m. EDT at a restaurant in the area.',
+      'Witnesses said Whigham was having steak for dinner when he suddenly slumped over at his table. Other diners and restaurant staff quickly stepped in to help him.',
+      'Emergency medical workers were called to the scene. They gave him medical care before taking him to a nearby hospital for further tests and treatment.',
+      'As of the time of publication, the cause of the collapse is not known. His current condition has also not been confirmed.',
+      'Whigham\'s representatives have not yet released an official statement about the incident.',
+      'This is a developing story. More details will be shared as they become available.',
+      '--- SOCIAL MEDIA ALERT ---',
+      'BREAKING: Hollywood talent agent Jack Whigham was reportedly taken to a hospital early Monday morning after collapsing during a late-night dinner in Brunswick, Georgia.',
+      'An eyewitness said the incident happened at around 2:31 a.m. EDT. Emergency medical workers arrived and took him to a nearby hospital for treatment.',
+      'His current condition and the cause of the collapse have not yet been confirmed.',
+      'More updates to follow.'
     ],
     backlinks: [
-      { text: 'Department of Defense Commercial Satellite Directive', url: 'https://defense.gov/guidance', source: 'Pentagon Records' },
-      { text: 'Center for Strategic and International Studies (CSIS)', url: 'https://csis.org/analysis/starlink-frontline', source: 'CSIS Policy Brief' },
-      { text: 'House Armed Services Committee Hearing Docket', url: 'https://armedservices.house.gov', source: 'Congressional Record' },
-      { text: 'Federal Communications Commission Orbital License Database', url: 'https://fcc.gov/space-filings', source: 'FCC Records' }
+      { text: 'Brunswick Emergency First Responder Dispatch Log', url: 'https://glynncounty.org/ems', source: 'First Responder Records' },
+      { text: 'Regional Medical Center Emergency Department', url: 'https://southeastgeorgiahealth.org', source: 'Clinical Records' },
+      { text: 'Hollywood Industry Representation Wire', url: 'https://deadline.com', source: 'Entertainment Bureau' }
     ],
     aeoQuickTakeaways: [
-      'Ukrainian frontline units experienced unexpected 3-hour Starlink outages during active tactical maneuvers.',
-      'Elon Musk publicly defended SpaceX, attributing connection limits to Department of Defense contractual boundary clauses.',
-      'Lawmakers across both parties are preparing subpoenas to examine national security reliance on private space constellations.'
+      'Hollywood talent agent Jack Whigham collapsed during a late-night dinner in Brunswick, Georgia at approximately 2:31 a.m. EDT.',
+      'Diners and restaurant staff intervened immediately before emergency medical workers arrived and transported him to a nearby hospital.',
+      'His current condition and the cause of the collapse have not yet been confirmed as representatives prepare an official statement.'
     ],
     faq: [
       {
-        question: 'Why did the Starlink outage occur in Ukraine?',
-        answer: 'SpaceX claims geofence boundary restrictions were enacted in compliance with defense regulations, while Ukrainian military sources cite unexpected throttling during critical maneuvers.'
+        question: 'What happened to Hollywood agent Jack Whigham in Georgia?',
+        answer: 'Jack Whigham suddenly slumped over his table during dinner at around 2:31 a.m. EDT in Brunswick, GA, prompting emergency medical care and hospital transport.'
+      },
+      {
+        question: 'Has Jack Whigham\'s condition been released?',
+        answer: 'As of publication, the exact cause of his collapse and his current clinical status have not been publicly confirmed by representatives.'
       }
     ],
-    tags: ['SpaceX', 'Ukraine', 'Elon Musk', 'Pentagon', 'National Security', 'Defense']
+    tags: ['Jack Whigham', 'Hollywood', 'Breaking News', 'Brunswick Georgia', 'Medical Emergency', 'Entertainment']
   },
 
   // 2. Latest News Lead

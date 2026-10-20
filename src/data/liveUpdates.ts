@@ -3,10 +3,10 @@ import { LiveUpdate } from '../types';
 export const LIVE_UPDATES: LiveUpdate[] = [
   {
     id: 'live-1',
-    text: "PENTAGON BRIEFING: Defense Officials Confirm Starlink Connectivity Outages Along Eastern Frontline",
+    text: "BREAKING: Hollywood Talent Agent Jack Whigham Taken to Hospital After Collapsing During Dinner in Georgia",
     timestamp: 'Just now',
-    category: 'Defense',
-    linkText: 'Read Full Analysis'
+    category: 'Breaking',
+    linkText: 'Read Hospital Report'
   },
   {
     id: 'live-2',

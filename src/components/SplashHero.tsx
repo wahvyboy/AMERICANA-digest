@@ -1,4 +1,5 @@
 import React from 'react';
+import { Eye, Heart, MessageSquare, Flame } from 'lucide-react';
 import { Article } from '../types';
 
 interface SplashHeroProps {
@@ -23,58 +24,80 @@ export const SplashHero: React.FC<SplashHeroProps> = ({
           <h1 className="font-headline font-black uppercase splash-title-fluid tracking-tight">
             {/* Line 1: Vibrant Red */}
             <span className="block text-[#E0292B] group-hover:opacity-90">
-              YIKES: SPACEX SCREWS UKRAINE
+              BREAKING: JACK WHIGHAM TAKEN TO HOSPITAL
             </span>
             
             {/* Line 2: Royal Blue */}
             <span className="block text-[#1565C0] group-hover:opacity-90 mt-0.5 sm:mt-1">
-              UPDATE: MUSK BLAMES GOV'T
+              COLLAPSED DURING DINNER IN GEORGIA
             </span>
 
             {/* Line 3: Black Italic */}
             <span className="block text-[#121212] italic group-hover:opacity-90 mt-0.5 sm:mt-1 font-black">
-              FEAR: DON STACKING THE DECK
+              TALENT AGENT SLUMPS OVER TABLE AT 2:31 A.M.
             </span>
           </h1>
         </div>
 
-        {/* Split Hero Image: Zelenskyy & Musk with fetchpriority="high" for Sub-second LCP */}
+        {/* Uploaded Header Image: Jack Whigham at dinner with fetchpriority="high" for Sub-second LCP */}
         <div 
           onClick={() => onOpenArticle(leadArticle)}
-          className="mt-3.5 sm:mt-6 cursor-pointer overflow-hidden rounded-xs border border-gray-100 shadow-xs relative group"
+          className="mt-3.5 sm:mt-5 cursor-pointer overflow-hidden rounded-xs border border-gray-100 shadow-sm relative group bg-gray-900"
         >
-          <div className="grid grid-cols-2 divide-x-2 divide-white aspect-16/10 sm:aspect-16/9 w-full bg-gray-100">
-            {/* Left: Volodymyr Zelenskyy */}
-            <div className="relative overflow-hidden aspect-16/10 sm:aspect-16/9">
-              <img
-                src="/images/zelenskyy.webp"
-                alt="President Volodymyr Zelenskyy"
-                width={640}
-                height={360}
-                fetchPriority="high"
-                decoding="async"
-                className="w-full h-full object-cover object-top group-hover:scale-102 transition-transform duration-500"
-              />
-              <div className="absolute bottom-1.5 left-1.5 sm:bottom-2 sm:left-2 bg-black/80 backdrop-blur-xs text-white text-[9px] sm:text-xs font-semibold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded shadow">
-                Volodymyr Zelenskyy
-              </div>
+          <div className="relative aspect-4/3 xs:aspect-16/10 sm:aspect-16/9 md:aspect-21/10 w-full overflow-hidden">
+            <img
+              src="/images/jack-whigham.webp"
+              alt="Hollywood talent agent Jack Whigham dining before hospital collapse"
+              width={1000}
+              height={750}
+              fetchPriority="high"
+              decoding="async"
+              className="w-full h-full object-cover object-[center_34%] group-hover:scale-102 transition-transform duration-500 filter contrast-105"
+            />
+            {/* Gradient Scrim for Readability */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/20 pointer-events-none" />
+
+            {/* Top-Left Live Alert Ribbon */}
+            <div className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-[#E0292B] text-white text-[10px] sm:text-xs font-black uppercase px-2.5 py-1 rounded shadow flex items-center space-x-1.5">
+              <span className="w-2 h-2 rounded-full bg-white animate-ping" />
+              <span>BREAKING WIRE</span>
             </div>
 
-            {/* Right: Elon Musk */}
-            <div className="relative overflow-hidden aspect-16/10 sm:aspect-16/9">
-              <img
-                src="/images/elon-musk.webp"
-                alt="Elon Musk"
-                width={640}
-                height={360}
-                fetchPriority="high"
-                decoding="async"
-                className="w-full h-full object-cover object-top group-hover:scale-102 transition-transform duration-500 filter contrast-105"
-              />
-              <div className="absolute bottom-1.5 right-1.5 sm:bottom-2 sm:right-2 bg-black/80 backdrop-blur-xs text-white text-[9px] sm:text-xs font-semibold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded shadow">
-                Elon Musk
+            {/* Bottom Photo Dateline & Eyewitness Attribution */}
+            <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 flex items-center justify-between text-white text-[10px] sm:text-xs">
+              <div className="bg-black/85 backdrop-blur-xs font-semibold px-2.5 py-1 rounded shadow">
+                Jack Whigham • Brunswick, GA
+              </div>
+              <div className="bg-black/85 backdrop-blur-xs text-gray-300 px-2.5 py-1 rounded shadow hidden xs:block">
+                Exclusive Eyewitness Dispatch
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Viral Engagement Stats Bar: 40M+ Views, 2M+ Love, 18,000 Comments */}
+        <div 
+          onClick={() => onOpenArticle(leadArticle)}
+          className="cursor-pointer mt-3 sm:mt-3.5 py-2 sm:py-2.5 px-3 sm:px-5 bg-gray-50 hover:bg-gray-100/80 border border-gray-200 rounded-xs flex flex-wrap items-center justify-between gap-2 text-xs sm:text-sm font-bold text-gray-700 transition-colors"
+        >
+          <div className="flex items-center space-x-1.5 sm:space-x-2 text-gray-900">
+            <Eye className="w-4 h-4 text-[#0E5B44]" />
+            <span><strong className="text-black font-black">40,000,000+</strong> Views</span>
+          </div>
+          
+          <div className="flex items-center space-x-1.5 sm:space-x-2 text-[#F02D5E]">
+            <Heart className="w-4 h-4 fill-current text-[#F02D5E]" />
+            <span><strong className="font-black">2,000,000+</strong> Love</span>
+          </div>
+
+          <div className="flex items-center space-x-1.5 sm:space-x-2 text-blue-700">
+            <MessageSquare className="w-4 h-4 text-blue-600" />
+            <span><strong className="font-black">18,000+</strong> Comments</span>
+          </div>
+
+          <div className="hidden sm:flex items-center space-x-1 text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded text-[11px] font-black uppercase tracking-wider">
+            <Flame className="w-3.5 h-3.5 text-orange-600 fill-current" />
+            <span>Trending Worldwide</span>
           </div>
         </div>
 
@@ -84,10 +107,10 @@ export const SplashHero: React.FC<SplashHeroProps> = ({
             onClick={() => onOpenArticle(leadArticle)}
             className="text-left font-headline font-black uppercase text-lg sm:text-2xl md:text-3xl text-gray-900 hover:text-[#0E5B44] transition-colors tracking-tight leading-snug"
           >
-            LATEST UPDATES: Trump Appeals Press Ban Ruling, DOJ Threatens Bar Assoc., Harris Campaign Trail Blitz, MORE...
+            DEVELOPING: HOLLYWOOD AGENT JACK WHIGHAM TAKEN TO HOSPITAL AFTER COLLAPSING AT TABLE IN GEORGIA RESTAURANT
           </button>
           <p className="text-gray-600 text-xs sm:text-sm mt-1 sm:mt-1.5 font-normal max-w-2xl mx-auto leading-relaxed">
-            Diplomatic wires boil over as satellite communication throttling impacts frontlines while Washington gears up for explosive congressional oversight battles.
+            Witnesses recount talent agent Jack Whigham slumping over his steak dinner at 2:31 a.m. in Brunswick, Georgia, before first responders transported him for urgent care as Hollywood reps prepare formal briefing.
           </p>
         </div>
       </div>

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { 
   X, Share2, Bookmark, Volume2, VolumeX, Eye, Clock, Check, 
   ExternalLink, MessageSquare, Sparkles, HelpCircle, ThumbsUp, Send, Link as LinkIcon,
-  Type, ArrowLeft
+  Type, ArrowLeft, Heart
 } from 'lucide-react';
 import { Article } from '../types';
 
@@ -39,6 +39,8 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
   const [bookmarked, setBookmarked] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [shareSuccessMessage, setShareSuccessMessage] = useState('');
+  const [hasLiked, setHasLiked] = useState(false);
+  const [likesDelta, setLikesDelta] = useState(0);
   const [comments, setComments] = useState<Array<{ name: string; text: string; time: string; likes: number }>>([
     { name: 'Dr. Arthur Sterling', text: 'The institutional implications highlighted in this reporting are spot on. Relying on commercial waivers poses clear constitutional questions.', time: '45m ago', likes: 14 },
     { name: 'Sarah Lin, JD', text: 'Extremely well-sourced piece. The references to the FLSA Section 13(a) docket are crucial context that cable broadcasts completely omit.', time: '2h ago', likes: 29 }
@@ -52,6 +54,8 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
   useEffect(() => {
     if (article) {
       document.body.style.overflow = 'hidden';
+      setHasLiked(false);
+      setLikesDelta(0);
       // Reset scroll position on new article
       if (scrollContainerRef.current) {
         scrollContainerRef.current.scrollTop = 0;
@@ -169,11 +173,11 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
           </div>
 
           <div className="flex items-center space-x-1 sm:space-x-2">
-            {/* Font Resizer Buttons */}
-            <div className="flex items-center border border-gray-200 rounded-sm overflow-hidden text-xs">
+            {/* Desktop Font Resizer Buttons */}
+            <div className="hidden sm:flex items-center border border-gray-200 rounded-sm overflow-hidden text-xs">
               <button
                 onClick={() => handleSetFontSize('normal')}
-                className={`touch-target-44 px-2.5 py-1.5 font-bold ${fontSize === 'normal' ? 'bg-[#0E5B44] text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                className={`px-2.5 py-1.5 font-bold ${fontSize === 'normal' ? 'bg-[#0E5B44] text-white' : 'text-gray-600 hover:bg-gray-100'}`}
                 title="Default text size"
                 aria-label="Default font size"
               >
@@ -181,7 +185,7 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
               </button>
               <button
                 onClick={() => handleSetFontSize('large')}
-                className={`touch-target-44 px-2.5 py-1.5 font-bold ${fontSize === 'large' ? 'bg-[#0E5B44] text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                className={`px-2.5 py-1.5 font-bold ${fontSize === 'large' ? 'bg-[#0E5B44] text-white' : 'text-gray-600 hover:bg-gray-100'}`}
                 title="Large text size"
                 aria-label="Large font size"
               >
@@ -189,7 +193,7 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
               </button>
               <button
                 onClick={() => handleSetFontSize('xlarge')}
-                className={`hidden sm:inline-flex touch-target-44 px-2.5 py-1.5 font-bold ${fontSize === 'xlarge' ? 'bg-[#0E5B44] text-white' : 'text-gray-600 hover:bg-gray-100'}`}
+                className={`px-2.5 py-1.5 font-bold ${fontSize === 'xlarge' ? 'bg-[#0E5B44] text-white' : 'text-gray-600 hover:bg-gray-100'}`}
                 title="Extra large text size"
                 aria-label="Extra large font size"
               >
@@ -200,13 +204,26 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
             {/* Audio Voice Player Toggle */}
             <button
               onClick={() => setIsPlayingAudio(!isPlayingAudio)}
-              className={`touch-target-44 p-2 rounded-full transition-colors ${
+              className={`hidden sm:inline-flex touch-target-44 p-2 rounded-full transition-colors ${
                 isPlayingAudio ? 'bg-[#0E5B44] text-white' : 'hover:bg-gray-100 text-gray-600'
               }`}
               title={isPlayingAudio ? 'Pause AI audio' : 'Listen to story'}
               aria-label={isPlayingAudio ? 'Pause audio briefing' : 'Listen to audio briefing'}
             >
               {isPlayingAudio ? <VolumeX className="w-5 h-5" /> : <Volume2 className="w-5 h-5" />}
+            </button>
+
+            {/* Love Button */}
+            <button
+              onClick={() => {
+                setHasLiked(!hasLiked);
+                setLikesDelta(prev => hasLiked ? prev - 1 : prev + 1);
+              }}
+              className="touch-target-44 p-2 rounded-full hover:bg-pink-50 text-gray-600 transition-colors"
+              title={hasLiked ? "Loved story" : "Love story"}
+              aria-label="Love story"
+            >
+              <Heart className={`w-5 h-5 ${hasLiked ? 'fill-current text-[#F02D5E]' : ''}`} />
             </button>
 
             {/* Bookmark Button */}
@@ -317,6 +334,24 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
             </div>
           </div>
 
+          {/* Viral Metrics Ribbon */}
+          {(article.viewsCount >= 1000000 || article.likesCount) && (
+            <div className="mb-6 py-2.5 px-3.5 sm:px-4 bg-gray-50 border border-gray-200 rounded-sm flex flex-wrap items-center justify-between gap-2.5 text-xs sm:text-sm font-bold text-gray-700">
+              <div className="flex items-center space-x-1.5 text-gray-900">
+                <Eye className="w-4 h-4 text-[#0E5B44]" />
+                <span><strong className="text-black font-black">{article.viewsCount >= 40000000 ? '40,000,000+' : `${(article.viewsCount / 1000000).toFixed(1)}M+`}</strong> Views</span>
+              </div>
+              <div className="flex items-center space-x-1.5 text-[#F02D5E]">
+                <Heart className="w-4 h-4 fill-current text-[#F02D5E]" />
+                <span><strong className="font-black">{(article.likesCount ? (article.likesCount + likesDelta).toLocaleString() : '2,000,000+')}</strong> Love</span>
+              </div>
+              <div className="flex items-center space-x-1.5 text-blue-700">
+                <MessageSquare className="w-4 h-4 text-blue-600" />
+                <span><strong className="font-black">{(article.commentsCount ? (article.commentsCount + comments.length - 2).toLocaleString() : '18,000+')}</strong> Comments</span>
+              </div>
+            </div>
+          )}
+
           {/* Hero Image with Explicit Aspect Ratio to eliminate CLS */}
           <div className="mb-6 rounded-xs overflow-hidden shadow-xs border border-gray-100 aspect-16/10 sm:aspect-16/9 bg-gray-100">
             <img
@@ -408,7 +443,7 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
               <div className="flex items-center space-x-2">
                 <MessageSquare className="w-4 h-4 text-[#0E5B44]" />
                 <h3 className="font-headline font-black text-base sm:text-lg uppercase tracking-tight text-gray-900">
-                  Reader Discussion ({comments.length})
+                  Reader Discussion ({article.commentsCount ? (article.commentsCount + comments.length - 2).toLocaleString() : comments.length})
                 </h3>
               </div>
               <span className="text-[11px] text-gray-400">Moderated newsroom feed</span>
