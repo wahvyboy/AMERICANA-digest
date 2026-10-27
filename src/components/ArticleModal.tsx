@@ -5,6 +5,7 @@ import {
   Type, ArrowLeft, Heart
 } from 'lucide-react';
 import { Article } from '../types';
+import { formatTimeAgo, formatFullDateTime } from '../utils/dateUtils';
 
 interface ArticleModalProps {
   article: Article | null;
@@ -323,13 +324,9 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
             </div>
 
             <div className="text-right">
-              <div className="font-semibold text-gray-900">{article.timeAgo}</div>
+              <div className="font-semibold text-gray-900">{formatTimeAgo(article.publishedAt)}</div>
               <div className="text-[10px] sm:text-[11px] text-gray-400">
-                {new Date(article.publishedAt).toLocaleDateString('en-US', {
-                  month: 'short',
-                  day: 'numeric',
-                  year: 'numeric'
-                })}
+                {formatFullDateTime(article.publishedAt)}
               </div>
             </div>
           </div>

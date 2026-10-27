@@ -3,10 +3,10 @@ import { LiveUpdate } from '../types';
 export const LIVE_UPDATES: LiveUpdate[] = [
   {
     id: 'live-1',
-    text: "BREAKING: Hollywood Talent Agent Jack Whigham Taken to Hospital After Collapsing During Dinner in Georgia",
+    text: "EXCLUSIVE OP-ED: Author & Journalist Jack Whigham Calls on Meta to Protect Users from Spiraling Fake Profile Scams",
     timestamp: 'Just now',
-    category: 'Breaking',
-    linkText: 'Read Hospital Report'
+    category: 'Opinion',
+    linkText: 'Read Full Op-Ed'
   },
   {
     id: 'live-2',

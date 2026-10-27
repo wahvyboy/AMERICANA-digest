@@ -14,6 +14,7 @@ import { PolicyModal } from './components/PolicyModal';
 import { Article, Category, PolicySlug } from './types';
 import { CURATED_ARTICLES } from './data/curatedArticles';
 import { NEWS_DATABASE, queryNewsArchive } from './data/databaseEngine';
+import { formatTimeAgo, formatFullDateTime } from './utils/dateUtils';
 import { Eye, ArrowRight } from 'lucide-react';
 
 export default function App() {
@@ -87,7 +88,7 @@ export default function App() {
     return () => window.removeEventListener('popstate', handleUrlRoute);
   }, []);
 
-  const leadArticle = CURATED_ARTICLES[0]; // Jack Whigham Hospital Collapse Story
+  const leadArticle = CURATED_ARTICLES[0]; // Jack Whigham Fake Profiles Op-Ed Story
   const latestNewsLead = CURATED_ARTICLES.find(a => a.id === 'trump-workers-pay-cut') || CURATED_ARTICLES[1];
 
   // Specific groups for signature HuffPost layout recreation
@@ -244,8 +245,8 @@ export default function App() {
                   <p className="text-gray-600 text-sm sm:text-base mt-2 line-clamp-2 leading-relaxed">
                     {latestNewsLead.summary}
                   </p>
-                  <div className="mt-2 text-xs text-gray-400 font-semibold">
-                    By {latestNewsLead.author.name} • {latestNewsLead.timeAgo}
+                  <div className="mt-2 text-xs text-gray-400 font-semibold" title={formatFullDateTime(latestNewsLead.publishedAt)}>
+                    By {latestNewsLead.author.name} • {formatTimeAgo(latestNewsLead.publishedAt)}
                   </div>
                 </div>
               )}
@@ -280,7 +281,7 @@ export default function App() {
                       </h4>
                     </div>
                     <div className="mt-3 flex items-center justify-between text-xs text-gray-400">
-                      <span>{article.timeAgo}</span>
+                      <span title={formatFullDateTime(article.publishedAt)}>{formatTimeAgo(article.publishedAt)}</span>
                       <span className="flex items-center space-x-1">
                         <Eye className="w-3.5 h-3.5" />
                         <span>{(article.viewsCount / 1000).toFixed(0)}k</span>
@@ -330,7 +331,9 @@ export default function App() {
                       <h4 className="font-headline font-black text-base uppercase tracking-tight text-gray-900 group-hover:text-[#0E5B44] leading-snug line-clamp-3">
                         {item.title}
                       </h4>
-                      <span className="text-[11px] text-gray-400 mt-1 block">{item.timeAgo}</span>
+                      <span className="text-[11px] text-gray-400 mt-1 block" title={formatFullDateTime(item.publishedAt)}>
+                        {formatTimeAgo(item.publishedAt)}
+                      </span>
                     </div>
                   </article>
                 ))}
@@ -396,7 +399,9 @@ export default function App() {
                       <h4 className="font-headline font-black text-base uppercase tracking-tight text-gray-900 group-hover:text-[#0E5B44] leading-snug line-clamp-3">
                         {item.title}
                       </h4>
-                      <span className="text-[11px] text-gray-400 mt-1 block">{item.timeAgo}</span>
+                      <span className="text-[11px] text-gray-400 mt-1 block" title={formatFullDateTime(item.publishedAt)}>
+                        {formatTimeAgo(item.publishedAt)}
+                      </span>
                     </div>
                   </article>
                 ))}
@@ -514,7 +519,7 @@ export default function App() {
                   </div>
 
                   <div className="p-4 pt-0 flex items-center justify-between text-xs text-gray-400">
-                    <span>{art.timeAgo}</span>
+                    <span title={formatFullDateTime(art.publishedAt)}>{formatTimeAgo(art.publishedAt)}</span>
                     <span className="flex items-center space-x-1">
                       <Eye className="w-3.5 h-3.5" />
                       <span>{(art.viewsCount / 1000).toFixed(0)}k</span>
