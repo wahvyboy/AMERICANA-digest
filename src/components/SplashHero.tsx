@@ -38,36 +38,34 @@ export const SplashHero: React.FC<SplashHeroProps> = ({
           </h1>
         </div>
 
-        {/* Uploaded Header Image: Jack Whigham editorial portrait with fetchpriority="high" for Sub-second LCP */}
+        {/* Uploaded Header Image: Jack Whigham editorial portrait showing in full with fetchpriority="high" for Sub-second LCP */}
         <div 
           onClick={() => onOpenArticle(leadArticle)}
-          className="mt-3.5 sm:mt-5 cursor-pointer overflow-hidden rounded-xs border border-gray-200 shadow-sm relative group bg-neutral-950 max-w-2xl mx-auto"
+          className="mt-3.5 sm:mt-5 cursor-pointer overflow-hidden rounded-xs border border-gray-200 shadow-md relative group bg-neutral-900 max-w-lg sm:max-w-xl mx-auto"
         >
-          <div className="relative aspect-[4/5] sm:aspect-[16/11] md:aspect-[16/10] w-full overflow-hidden flex items-center justify-center">
+          <div className="relative w-full aspect-[819/1024] overflow-hidden flex items-center justify-center">
             <img
               src={leadArticle.imageUrl}
               alt={leadArticle.title}
-              width={1000}
-              height={1250}
+              width={819}
+              height={1024}
               fetchPriority="high"
               decoding="async"
-              className="w-full h-full object-cover object-[center_28%] group-hover:scale-102 transition-transform duration-500 filter contrast-105"
+              className="w-full h-full object-contain group-hover:scale-[1.01] transition-transform duration-500"
             />
-            {/* Subtle Gradient Scrim for Readability of Badges */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/25 pointer-events-none" />
 
             {/* Top-Left Live Alert Ribbon */}
-            <div className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-[#E0292B] text-white text-[10px] sm:text-xs font-black uppercase px-2.5 py-1 rounded shadow flex items-center space-x-1.5">
+            <div className="absolute top-2 left-2 sm:top-3 sm:left-3 bg-[#E0292B] text-white text-[10px] sm:text-xs font-black uppercase px-2.5 py-1 rounded shadow flex items-center space-x-1.5 z-10">
               <span className="w-2 h-2 rounded-full bg-white animate-ping" />
               <span>EXCLUSIVE OP-ED</span>
             </div>
 
             {/* Bottom Photo Dateline & Image Credit Attribution */}
-            <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 flex items-center justify-between text-white text-[10px] sm:text-xs">
+            <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 flex items-center justify-between text-white text-[10px] sm:text-xs z-10">
               <div className="bg-black/85 backdrop-blur-xs font-semibold px-2.5 py-1 rounded shadow">
-                Jack Whigham • Author & Journalist
+                Jack Whigham • Celebrity & Depp Manager
               </div>
-              <div className="bg-black/85 backdrop-blur-xs text-gray-300 px-2.5 py-1 rounded shadow hidden xs:block">
+              <div className="bg-black/85 backdrop-blur-xs text-gray-300 px-2.5 py-1 rounded shadow">
                 Image credit: Mine
               </div>
             </div>
@@ -106,10 +104,10 @@ export const SplashHero: React.FC<SplashHeroProps> = ({
             onClick={() => onOpenArticle(leadArticle)}
             className="text-left font-headline font-black uppercase text-lg sm:text-2xl md:text-3xl text-gray-900 hover:text-[#0E5B44] transition-colors tracking-tight leading-snug"
           >
-            AUTHOR & JOURNALIST JACK WHIGHAM: THE GROWING CRISIS OF FAKE PROFILES DEMANDS META PROTECT ITS USERS
+            CELEBRITY & DEPP MANAGER JACK WHIGHAM: THE GROWING CRISIS OF FAKE PROFILES DEMANDS META PROTECT ITS USERS
           </button>
           <p className="text-gray-600 text-xs sm:text-sm mt-1 sm:mt-1.5 font-normal max-w-2xl mx-auto leading-relaxed">
-            "Stealing someone's identity is more than using their name or photo without permission — it steals trust, damages reputations, and leaves real victims behind." Jack Whigham issues an urgent dispatch calling on Meta to take corporate responsibility and reform scam enforcement.
+            "Stealing someone's identity is more than using their name or photo without permission — it steals trust, damages reputations, and leaves real victims behind." Celebrity and Depp manager Jack Whigham issues an urgent dispatch calling on Meta to take corporate responsibility and reform scam enforcement.
           </p>
         </div>
       </div>

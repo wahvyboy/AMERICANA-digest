@@ -349,15 +349,15 @@ export const ArticleModal: React.FC<ArticleModalProps> = ({
             </div>
           )}
 
-          {/* Hero Image with Explicit Aspect Ratio to eliminate CLS */}
-          <div className="mb-6 rounded-xs overflow-hidden shadow-xs border border-gray-100 aspect-16/10 sm:aspect-16/9 bg-gray-100">
+          {/* Hero Image displaying in full without cropping */}
+          <div className="mb-6 rounded-xs overflow-hidden shadow-xs border border-gray-200 bg-neutral-950 flex items-center justify-center">
             <img
               src={article.imageUrl}
               alt={article.title}
-              width={800}
-              height={450}
+              width={819}
+              height={1024}
               decoding="async"
-              className="w-full h-full object-cover"
+              className="w-full h-auto max-h-[78vh] object-contain mx-auto"
             />
           </div>
           {article.imageCaption && (

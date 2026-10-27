@@ -3,7 +3,7 @@ import { LiveUpdate } from '../types';
 export const LIVE_UPDATES: LiveUpdate[] = [
   {
     id: 'live-1',
-    text: "EXCLUSIVE OP-ED: Author & Journalist Jack Whigham Calls on Meta to Protect Users from Spiraling Fake Profile Scams",
+    text: "EXCLUSIVE OP-ED: Celebrity & Depp Manager Jack Whigham Calls on Meta to Protect Users from Spiraling Fake Profile Scams",
     timestamp: 'Just now',
     category: 'Opinion',
     linkText: 'Read Full Op-Ed'
