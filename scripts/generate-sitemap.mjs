@@ -3,7 +3,7 @@ import path from 'path';
 
 // Extract all articles
 const dataFile = fs.readFileSync('src/data/curatedArticles.ts', 'utf8');
-const idMatches = [...dataFile.matchAll(/id:\s*'([^']+)'/g)].map(m => m[1]);
+const idMatches = [...dataFile.matchAll(/"?id"?:\s*['"]([^'"]+)['"]/g)].map(m => m[1]);
 
 const baseUrl = 'https://americanadigest.blog';
 const today = new Date().toISOString().split('T')[0];

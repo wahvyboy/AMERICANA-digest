@@ -88,46 +88,19 @@ export default function App() {
     return () => window.removeEventListener('popstate', handleUrlRoute);
   }, []);
 
-  const leadArticle = CURATED_ARTICLES[0]; // Jack Whigham Fake Profiles Op-Ed Story
-  const latestNewsLead = CURATED_ARTICLES.find(a => a.id === 'trump-workers-pay-cut') || CURATED_ARTICLES[1];
+  const leadArticle = CURATED_ARTICLES[0]; // Exclusive Lead: Behind the Spotlight
+  const latestNewsLead = CURATED_ARTICLES[1]; // Top breaking news lead: Midterm Senate Recounts
 
-  // Specific groups for signature HuffPost layout recreation
-  const latestNewsItems = CURATED_ARTICLES.filter(a => 
-    [
-      'hegseth-army-event',
-      'thom-tillis-trump',
-      'midterm-ten-billion',
-      'ohio-oops-trump-democrat',
-      'midterm-democrats-warning',
-      'supreme-court-political-ad',
-      'chick-fil-a-ceo-equal-rights',
-      'doj-threatens-american-bar-association',
-      'el-sayed-brilliant-reply',
-      'james-carville-newsmax',
-      'trump-livestreamed-execution-second-thoughts',
-      'megyn-kelly-katie-zacharia',
-      'scott-jennings-cnn-response',
-      'jen-psaki-katie-zacharia'
-    ].includes(a.id)
-  );
+  // Dynamic frontpage newsroom streams showcasing fresh stories from today and the week
+  const latestNewsItems = CURATED_ARTICLES
+    .filter(a => (a.category === 'Politics' || a.category === 'Latest News') && a.id !== leadArticle.id && a.id !== latestNewsLead.id)
+    .slice(0, 18);
 
-  const whatsHappeningItems = CURATED_ARTICLES.filter(a =>
-    [
-      'mike-johnson-ilhan-omar-raid',
-      'body-language-katie-zacharia',
-      'embarrassing-questions-men-sex',
-      'funniest-tweets-couples',
-      'what-usb-stands-for'
-    ].includes(a.id)
-  );
+  const whatsHappeningItems = CURATED_ARTICLES
+    .filter(a => (a.category === 'Business & Tech' || a.category === 'Latest News') && !latestNewsItems.some(item => item.id === a.id) && a.id !== leadArticle.id && a.id !== latestNewsLead.id)
+    .slice(0, 8);
 
-  const lifeItems = CURATED_ARTICLES.filter(a =>
-    [
-      'grandparents-cross-boundary',
-      'machine-gun-kelly-megan-fox',
-      'social-security-office-visit'
-    ].includes(a.id)
-  );
+  const lifeItems = CURATED_ARTICLES.filter(a => a.category === 'Life');
 
   const shoppingItems = CURATED_ARTICLES.filter(a => a.category === 'Shopping');
 

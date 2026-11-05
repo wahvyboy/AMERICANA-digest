@@ -23,17 +23,17 @@ export const SplashHero: React.FC<SplashHeroProps> = ({
           <h1 className="font-headline font-black uppercase splash-title-fluid tracking-tight">
             {/* Line 1: Vibrant Red */}
             <span className="block text-[#E0292B] group-hover:opacity-90">
-              OPINION & INVESTIGATION: JACK WHIGHAM
+              BEHIND THE SPOTLIGHT
             </span>
             
             {/* Line 2: Royal Blue */}
             <span className="block text-[#1565C0] group-hover:opacity-90 mt-0.5 sm:mt-1">
-              THE GROWING CRISIS OF FAKE PROFILES
+              HOW THE ENTERTAINMENT INDUSTRY IS BREAKING THE TRUST
             </span>
 
             {/* Line 3: Black Italic */}
             <span className="block text-[#121212] italic group-hover:opacity-90 mt-0.5 sm:mt-1 font-black">
-              A CALL FOR META TO PROTECT ITS USERS
+              BETWEEN CELEBRITIES AND THEIR FANS
             </span>
           </h1>
         </div>
@@ -63,10 +63,10 @@ export const SplashHero: React.FC<SplashHeroProps> = ({
             {/* Bottom Photo Dateline & Image Credit Attribution */}
             <div className="absolute bottom-2 left-2 right-2 sm:bottom-3 sm:left-3 sm:right-3 flex items-center justify-between text-white text-[10px] sm:text-xs z-10">
               <div className="bg-black/85 backdrop-blur-xs font-semibold px-2.5 py-1 rounded shadow">
-                Jack Whigham • Celebrity & Depp Manager
+                {leadArticle.author.name} • {leadArticle.author.role}
               </div>
               <div className="bg-black/85 backdrop-blur-xs text-gray-300 px-2.5 py-1 rounded shadow">
-                Image credit: Mine
+                {leadArticle.imageCaption || 'Image credit: Uploaded'}
               </div>
             </div>
           </div>
@@ -79,17 +79,17 @@ export const SplashHero: React.FC<SplashHeroProps> = ({
         >
           <div className="flex items-center space-x-1.5 sm:space-x-2 text-gray-900">
             <Eye className="w-4 h-4 text-[#0E5B44]" />
-            <span><strong className="text-black font-black font-mono">{(leadArticle.viewsCount || 41839274).toLocaleString()}</strong> Views</span>
+            <span><strong className="text-black font-black font-mono">{(leadArticle.viewsCount || 20482915).toLocaleString()}</strong> Views</span>
           </div>
           
           <div className="flex items-center space-x-1.5 sm:space-x-2 text-[#F02D5E]">
             <Heart className="w-4 h-4 fill-current text-[#F02D5E]" />
-            <span><strong className="font-black font-mono">{(leadArticle.likesCount || 2148693).toLocaleString()}</strong> Love</span>
+            <span><strong className="font-black font-mono">{(leadArticle.likesCount || 1418290).toLocaleString()}</strong> Love</span>
           </div>
 
           <div className="flex items-center space-x-1.5 sm:space-x-2 text-blue-700">
             <MessageSquare className="w-4 h-4 text-blue-600" />
-            <span><strong className="font-black font-mono">{(leadArticle.commentsCount || 2041892).toLocaleString()}</strong> Comments</span>
+            <span><strong className="font-black font-mono">{(leadArticle.commentsCount || 1192400).toLocaleString()}</strong> Comments</span>
           </div>
 
           <div className="hidden sm:flex items-center space-x-1 text-emerald-800 bg-emerald-100/80 px-2 py-0.5 rounded text-[11px] font-black uppercase tracking-wider">
@@ -104,10 +104,10 @@ export const SplashHero: React.FC<SplashHeroProps> = ({
             onClick={() => onOpenArticle(leadArticle)}
             className="text-left font-headline font-black uppercase text-lg sm:text-2xl md:text-3xl text-gray-900 hover:text-[#0E5B44] transition-colors tracking-tight leading-snug"
           >
-            CELEBRITY & DEPP MANAGER JACK WHIGHAM: THE GROWING CRISIS OF FAKE PROFILES DEMANDS META PROTECT ITS USERS
+            {leadArticle.title}
           </button>
           <p className="text-gray-600 text-xs sm:text-sm mt-1 sm:mt-1.5 font-normal max-w-2xl mx-auto leading-relaxed">
-            "Stealing someone's identity is more than using their name or photo without permission — it steals trust, damages reputations, and leaves real victims behind." Celebrity and Depp manager Jack Whigham issues an urgent dispatch calling on Meta to take corporate responsibility and reform scam enforcement.
+            {leadArticle.subtitle || leadArticle.summary}
           </p>
         </div>
       </div>

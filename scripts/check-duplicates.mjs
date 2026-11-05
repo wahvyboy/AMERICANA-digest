@@ -1,8 +1,8 @@
 import fs from 'fs';
 
 const content = fs.readFileSync('src/data/curatedArticles.ts', 'utf8');
-const imgMatches = [...content.matchAll(/imageUrl:\s*['"]([^'"]+)['"]/g)].map(m => m[1]);
-const titleMatches = [...content.matchAll(/title:\s*['"]([^'"]+)['"]/g)].map(m => m[1]);
+const imgMatches = [...content.matchAll(/"?imageUrl"?:\s*['"]([^'"]+)['"]/g)].map(m => m[1]);
+const titleMatches = [...content.matchAll(/"?title"?:\s*['"]([^'"]+)['"]/g)].map(m => m[1]);
 
 console.log('Total images:', imgMatches.length);
 const imgCounts = {};

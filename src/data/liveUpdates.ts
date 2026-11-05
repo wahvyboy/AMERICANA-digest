@@ -3,65 +3,65 @@ import { LiveUpdate } from '../types';
 export const LIVE_UPDATES: LiveUpdate[] = [
   {
     id: 'live-1',
-    text: "EXCLUSIVE OP-ED: Celebrity & Depp Manager Jack Whigham Calls on Meta to Protect Users from Spiraling Fake Profile Scams",
+    text: "EXCLUSIVE OP-ED: Behind the Spotlight: How the Entertainment Industry Is Breaking the Trust Between Celebrities and Their Fans",
     timestamp: 'Just now',
     category: 'Opinion',
     linkText: 'Read Full Op-Ed'
   },
   {
     id: 'live-2',
-    text: "CONSTITUTIONAL DESK: Supreme Court Hears Emergency Challenge Over Independent Campaign Ad Spending",
-    timestamp: '4 min ago',
-    category: 'SCOTUS',
-    linkText: 'Oral Arguments Transcript'
+    text: "ELECTION DECISION: Senate Balance Sealed as Final Recount Tallies Conclude in Nevada and Pennsylvania",
+    timestamp: '18 min ago',
+    category: 'Politics',
+    linkText: 'Certified Results'
   },
   {
     id: 'live-3',
-    text: "LABOR BULLETIN: Department of Labor Issues Revised FLSA Overtime Exemption Guidelines",
-    timestamp: '12 min ago',
-    category: 'Economy',
-    linkText: 'View Wage Impact Model'
+    text: "JUDICIAL SHOWDOWN: Supreme Court Agrees to Hear Landmark AI Fair Use and Creator Compensation Lawsuit",
+    timestamp: '32 min ago',
+    category: 'SCOTUS',
+    linkText: 'High Court Docket'
   },
   {
     id: 'live-4',
-    text: "WHITE HOUSE PRESS: Briefing Room Clashes Intensify Over Press Credential Injunctions",
-    timestamp: '21 min ago',
-    category: 'Media',
-    linkText: 'Read Court Injunction'
+    text: "MONETARY POLICY: Federal Reserve Holds Benchmark Rates Steady as October Productivity Surges Past Forecasts",
+    timestamp: '45 min ago',
+    category: 'Economy',
+    linkText: 'FOMC Policy Statement'
   },
   {
     id: 'live-5',
-    text: "CAPITOL HILL: Senate Ethics Panel Initiates Inquiry Into Foreign Aviation & Executive Gifts",
-    timestamp: '34 min ago',
-    category: 'Politics',
-    linkText: 'Ethics Committee Docket'
+    text: "TECH HARDWARE: Silicon Photonics Architecture Achieves 1.6 Terabit Optical Interconnect Speed for AI Clusters",
+    timestamp: '1 hour ago',
+    category: 'Business & Tech',
+    linkText: 'Technical Benchmark'
   },
   {
     id: 'live-6',
-    text: "CAMPAIGN FINANCE: Midterm Ad Spending Crosses Historic $10 Billion Threshold Across Battlegrounds",
-    timestamp: '45 min ago',
-    category: 'Elections',
-    linkText: 'State-By-State Breakdown'
+    text: "AVIATION WATCH: FAA Completes Trajectory-Based Air Traffic Modernization Across 24 Major Flight Hubs",
+    timestamp: '1 hour ago',
+    category: 'Latest News',
+    linkText: 'FAA Progress Report'
   },
   {
     id: 'live-7',
-    text: "FEDERAL CIRCUIT: D.C. Appeals Panel Spars Over National Guard Deployment Jurisdiction in Capital",
-    timestamp: '1 hour ago',
-    category: 'Legal',
-    linkText: 'D.C. Circuit Order'
+    text: "CLEAN FUSION: Commercial Prototype Achieves Sustained High-Density Plasma Confinement Record",
+    timestamp: '2 hours ago',
+    category: 'Science',
+    linkText: 'Physics Milestone'
   },
   {
     id: 'live-8',
-    text: "AEROSPACE WATCH: Federal Communications Commission Reviews Orbital Spectrum Allocations for Constellations",
-    timestamp: '1 hour ago',
-    category: 'Business & Tech',
-    linkText: 'FCC Filing Details'
+    text: "MEDICAL BREAKTHROUGH: Needle-Free Inhaled Insulin Shows Superior Glucose Control in Phase 3 Trial",
+    timestamp: '2 hours ago',
+    category: 'Health',
+    linkText: 'Clinical Results'
   },
   {
     id: 'live-9',
-    text: "ECONOMIC PULSE: Core Services Inflation Diverges As Housing Carrying Costs Challenge Household Budgets",
-    timestamp: '2 hours ago',
-    category: 'Economy',
-    linkText: 'BLS Metric Analysis'
+    text: "MARKET WATCH: S&P 500 Touches Fresh All-Time Highs as Productivity Drives Corporate Margin Expansion",
+    timestamp: '3 hours ago',
+    category: 'Markets',
+    linkText: 'Market Close Analysis'
   }
 ];
