@@ -7,15 +7,15 @@ const leadArticle = {
   subtitle: 'Decisions made in the name of corporate profit and image management are fracturing personal lives and silencing talent. A rare, firsthand dispatch from inside the industry on why celebrities are human beings, not corporate assets.',
   category: 'Latest News',
   author: {
-    name: 'Jack Whigham',
-    role: 'Celebrity & Talent Representative',
+    name: 'Loris Assadian',
+    role: 'Author & Contributor',
     avatar: '/images/behind-the-spotlight-thumb.webp',
   },
   publishedAt: '2026-11-05T06:15:00Z',
   timeAgo: 'Just now',
   readTime: '5 min read',
   imageUrl: '/images/behind-the-spotlight.webp',
-  imageCaption: 'The entertainment industry is built on talent, passion, and the connection between celebrities and the people who support them.',
+  imageCaption: 'Image credit: Kristin Riley',
   isLeadStory: true,
   isBreaking: true,
   viewsCount: 20482915,
@@ -53,7 +53,8 @@ const leadArticle = {
       answer: 'When management dictates public communication and intervenes punitively, it creates isolation and distrust, making it difficult for public figures to maintain honest, genuine connections with loved ones and fans.'
     }
   ],
-  tags: ['Behind the Spotlight', 'Entertainment Industry', 'Celebrity Culture', 'Talent Management', 'Fan Trust', 'Mental Health', 'Hollywood Reform', 'Exclusive Op-Ed']
+  tags: ['Behind the Spotlight', 'Loris Assadian', 'Entertainment Industry', 'Celebrity Culture', 'Talent Management', 'Fan Trust', 'Mental Health', 'Hollywood Reform', 'Exclusive Op-Ed']
 };
 
 export { leadArticle };
+

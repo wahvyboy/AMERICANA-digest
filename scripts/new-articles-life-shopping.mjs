@@ -391,3 +391,4 @@ export const LIFE_SHOPPING_ARTICLES = [
     viewsCount: 355000
   }
 ];
+

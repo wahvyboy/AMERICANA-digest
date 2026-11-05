@@ -8,15 +8,15 @@ export const CURATED_ARTICLES: Article[] = [
     "subtitle": "Decisions made in the name of corporate profit and image management are fracturing personal lives and silencing talent. A rare, firsthand dispatch from inside the industry on why celebrities are human beings, not corporate assets.",
     "category": "Latest News",
     "author": {
-      "name": "Jack Whigham",
-      "role": "Celebrity & Talent Representative",
+      "name": "Loris Assadian",
+      "role": "Author & Contributor",
       "avatar": "/images/behind-the-spotlight-thumb.webp"
     },
     "publishedAt": "2026-11-05T06:15:00Z",
     "timeAgo": "Just now",
     "readTime": "5 min read",
     "imageUrl": "/images/behind-the-spotlight.webp",
-    "imageCaption": "The entertainment industry is built on talent, passion, and the connection between celebrities and the people who support them.",
+    "imageCaption": "Image credit: Kristin Riley",
     "isLeadStory": true,
     "isBreaking": true,
     "viewsCount": 20482915,
@@ -56,6 +56,7 @@ export const CURATED_ARTICLES: Article[] = [
     ],
     "tags": [
       "Behind the Spotlight",
+      "Loris Assadian",
       "Entertainment Industry",
       "Celebrity Culture",
       "Talent Management",

@@ -38,7 +38,7 @@ export const SplashHero: React.FC<SplashHeroProps> = ({
           </h1>
         </div>
 
-        {/* Uploaded Header Image: Jack Whigham editorial portrait showing in full with fetchpriority="high" for Sub-second LCP */}
+        {/* Uploaded Header Image: Loris Assadian editorial portrait showing in full with fetchpriority="high" for Sub-second LCP */}
         <div 
           onClick={() => onOpenArticle(leadArticle)}
           className="mt-3.5 sm:mt-5 cursor-pointer overflow-hidden rounded-xs border border-gray-200 shadow-md relative group bg-neutral-900 max-w-lg sm:max-w-xl mx-auto"
@@ -66,7 +66,7 @@ export const SplashHero: React.FC<SplashHeroProps> = ({
                 {leadArticle.author.name} • {leadArticle.author.role}
               </div>
               <div className="bg-black/85 backdrop-blur-xs text-gray-300 px-2.5 py-1 rounded shadow">
-                {leadArticle.imageCaption || 'Image credit: Uploaded'}
+                {leadArticle.imageCaption || 'Image credit: Kristin Riley'}
               </div>
             </div>
           </div>

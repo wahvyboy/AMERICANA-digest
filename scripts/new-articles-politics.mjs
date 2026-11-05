@@ -303,3 +303,4 @@ export const NEW_ARTICLES = [
     viewsCount: 310000
   }
 ];
+
