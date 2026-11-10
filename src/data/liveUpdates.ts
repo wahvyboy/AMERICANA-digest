@@ -3,10 +3,10 @@ import { LiveUpdate } from '../types';
 export const LIVE_UPDATES: LiveUpdate[] = [
   {
     id: 'live-1',
-    text: "EXCLUSIVE OP-ED: Behind the Spotlight: How the Entertainment Industry Is Breaking the Trust Between Celebrities and Their Fans",
+    text: "EXCLUSIVE ARTS & CULTURE: The Poetry of Silhouette — An Evening of Millinery Artistry with Sylvia Stanley, Jack Whigham and Johnny Depp",
     timestamp: 'Just now',
-    category: 'Opinion',
-    linkText: 'Read Full Op-Ed'
+    category: 'Culture',
+    linkText: 'Read Full Invitation'
   },
   {
     id: 'live-2',
